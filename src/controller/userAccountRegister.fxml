@@ -1,71 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.ProgressBar?>
 
 <fx:root type="javafx.scene.layout.GridPane"
 	xmlns:fx="http://javafx.com/fxml"
 	stylesheets="@userAccount.css"
 	styleClass="userAccount">
-	<padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
 	<Text fx:id="welcomeText" text="Nouveau compte utilisateur" 
          GridPane.columnIndex="0" GridPane.rowIndex="0"
         GridPane.columnSpan="2"/>
 
+ 	<VBox GridPane.rowIndex="1" GridPane.columnSpan="2">
+	    <Label text="User Name:"/>
+	    <TextField fx:id="fieldUsername"/>
+ 	</VBox>
+ 	
+ 	<VBox GridPane.rowIndex="2" GridPane.columnSpan="2">
+	    <Label text="Email:"/>
+	    <TextField fx:id="fieldEmail"/>
+ 	</VBox>
+ 	
+ 	<VBox GridPane.rowIndex="3" >
+	    <Label text="Prénom:"/>
+	    <TextField fx:id="fieldFirstName"/>
+ 	</VBox>
+ 	
+ 	<VBox GridPane.rowIndex="3" GridPane.columnIndex="1">
+	    <Label text="Nom:"/>
+	    <TextField fx:id="fieldLastName"/>
+ 	</VBox>
+ 	
+ 	<VBox GridPane.rowIndex="4" GridPane.columnSpan="2">
+	    <Label text="Ville:"/>
+	    <TextField fx:id="fieldCity"/>
+ 	</VBox>
+ 	
+ 	<VBox GridPane.rowIndex="5" GridPane.columnSpan="2">
+	    <Label text="Mot de passe:"/>
+	    <PasswordField fx:id="fieldPassword"/>
+	    <ProgressBar fx:id="passwordIndicator" progress="0"/>
+ 	</VBox>
  
-    <Label text="User Name:"
-        GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="fieldUsername"
-        GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2">
-    </TextField>
+  	<VBox GridPane.rowIndex="6" GridPane.columnSpan="2">
+	    <Label text="Confirmez le mot de passe:"/>
+	    <PasswordField fx:id="fieldConfirmPassword"/>
+ 	</VBox>
  
-    <Label text="Email:"
-        GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <TextField fx:id="fieldEmail" 
-        GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
-    </TextField>
- 
-  
-    <Label text="Prénom:"
-        GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-    <TextField fx:id="fieldFirstName" 
-        GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-        
-    <Label text="Nom:"
-        GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-    <TextField fx:id="fieldName" 
-        GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-        
-    <Label text="Ville:"
-        GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-    <TextField fx:id="fieldCity"
-        GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="2"/>
- 
- 
-    <Label text="Password:"
-        GridPane.columnIndex="0" GridPane.rowIndex="9"/>
-    <PasswordField fx:id="fieldPassword" 
-        GridPane.columnIndex="0" GridPane.rowIndex="10" GridPane.columnSpan="2"/>
-        
-    <Label text="Confirm password:"
-        GridPane.columnIndex="0" GridPane.rowIndex="11"/>
-    <PasswordField fx:id="fieldConfirmPassword" 
-        GridPane.columnIndex="0" GridPane.rowIndex="12" GridPane.columnSpan="2"/>
-        
-        
-    <HBox spacing="10" alignment="bottom_right" 
-        GridPane.columnIndex="1" GridPane.rowIndex="13">
-        <Button fx:id="submitButton" text="Sign In"     
-        onAction="#handleSubmitButtonAction"/>
+    <HBox GridPane.rowIndex="7" GridPane.columnSpan="2" alignment="top_right" >
+        <Button fx:id="submitButton" text="Sign In" onAction="#handleSubmitButtonAction"/>
     </HBox>
-
-    <Text fx:id="actiontarget"
-        GridPane.columnIndex="0" GridPane.rowIndex="14" GridPane.columnSpan="2"/>
 </fx:root>

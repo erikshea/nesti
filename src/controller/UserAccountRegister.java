@@ -1,53 +1,36 @@
 package controller;
 
-import java.awt.Dimension;
-import java.io.Console;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import org.controlsfx.control.PopOver;
-
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
-import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.util.Duration;
+import javafx.application.Platform;
+
 public class UserAccountRegister extends GridPane{
     private MainWindowControl mainController;	// for access to other controllers
     private HashMap<TextField, Popup> validationPopups = new HashMap<>(); // Stores Popup objects because they aren't in Node tree.
-    
-    @FXML private Text welcomeText,actiontarget;
+    private static final int MIN_PASSWORD_STRENGTH=100;
+    @FXML private Text welcomeText;
     @FXML private TextField fieldUsername, fieldEmail, fieldFirstName, fieldName, fieldCity;
     @FXML private PasswordField fieldPassword, fieldConfirmPassword;
     @FXML private Button submitButton;
-    
+    @FXML private ProgressBar passwordIndicator;
     @FXML protected void handleSubmitButtonAction(ActionEvent event) {
-        actiontarget.setText("Sign in button pressed");
+       // actiontarget.setText("Sign in button pressed");
     }
     
     // Interface for validator with one method passed in lambda function
@@ -59,84 +42,100 @@ public class UserAccountRegister extends GridPane{
      * Set up gui elements
      */
     @FXML private void initialize() {
-    	this.addFieldValidator( fieldEmail, null,
-			(String value) -> value.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"),
-			"Valide."); // email regex source: https://emailregex.com/
-    	this.addFieldValidator( fieldUsername, null,
-			(String value) -> value.matches("^.*\\w.*$"),
-			"Constitué de chiffres, de lettres, et des signes moins et sous-tiret.");
-    	this.addFieldValidator( fieldPassword, null,
-			(String value) -> value.matches("^.*[0-9].*$"),
-			"Contient au moins un chiffre.");
-    	this.addFieldValidator( fieldPassword, null,
-			(String value) -> value.matches("^.*[a-zA-Z].*$"),
-			"Contient au moins une lettre.");
-    	this.addFieldValidator( fieldPassword, null,
-			(String value) -> ( UserAccountRegister.getPasswordStrength(value)>50 ),
-			"Suffisamment fort.");
-    	this.addFieldValidator( fieldConfirmPassword, null,
-    		(String value) -> value.equals(fieldPassword.getText()),
-			"Correspond avec le mot de passe.");
-    }
-    
-    
-    private void addFieldValidator(TextField field, Region anchorNode, FieldValidator validator, String message) {
-    	if ( !this.validationPopups.containsKey(field) ) {
-            Popup validationPopup = new Popup() {
-				@Override
-				public void show(Window w) {
-		            Point2D fieldScreenPos;
-		        	if (anchorNode != null) {
-		        		fieldScreenPos = anchorNode.localToScreen(0.0,anchorNode.getHeight());
-		        	} else {
-		        		fieldScreenPos = field.localToScreen(0.0,field.getHeight());
-		        	}
-					super.show(w, fieldScreenPos.getX(), fieldScreenPos.getY());
-				}
-            };
-            
-        	validationPopup.autoHideProperty().set(true);
-        	validationPopup.setConsumeAutoHidingEvents(false);
-        	
-        	field.focusedProperty().addListener((observable, oldValue, newValue) -> {
-        		if (newValue) { 
-                    validationPopup.show(field.getScene().getWindow());
+    	this.fieldPassword.textProperty().addListener((observable, oldValue, newValue) -> {
+        	Platform.runLater(()->{ // runLater needed to avoid IllegalStateException when running unit tests without FXRobot
+        		double progress = getPasswordStrength(newValue)/(2*MIN_PASSWORD_STRENGTH);
+        		this.passwordIndicator.setProgress(progress);
+        		this.passwordIndicator.getStyleClass().removeAll("great", "good", "poor", "very-poor");
+        		if(progress > 0.75) {
+        			this.passwordIndicator.getStyleClass().add("great");
+        		} else if (progress > 0.5) {
+        			this.passwordIndicator.getStyleClass().add("good");
+        		}else if (progress > 0.25){
+        			this.passwordIndicator.getStyleClass().add("poor");
+        		}else {
+        			this.passwordIndicator.getStyleClass().add("very-poor");
         		}
         	});
-        	
-        	field.textProperty().addListener((observable, oldValue, newValue) -> {
-        		validationPopup.show(field.getScene().getWindow());
-        	});
-
-    		field.getStyleClass().add("requiredField");
-            validationPopup.getContent().add(new VBox());
-            this.validationPopups.put(field, validationPopup);
-    	}
+    	});
     	
-    	Popup validationPopup = this.validationPopups.get(field);
+    	this.addFieldValidator( this.fieldEmail, null,
+			(String value) -> value.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"),
+			"Valide."); // email regex source: https://emailregex.com/
+    	this.addFieldValidator( this.fieldUsername, null,
+			(String value) -> value.matches("^[\\w-]+$"),
+			"Constitué de lettres non-accentuées, de chiffres, et des signes moins et sous-tiret.");
+    	this.addFieldValidator( this.fieldPassword, this.passwordIndicator,
+			(String value) -> value.matches("^.*[0-9].*$"),
+			"Contient au moins un chiffre.");
+    	this.addFieldValidator( this.fieldPassword, null,
+			(String value) -> value.matches("^.*[a-zA-Z].*$"),
+			"Contient au moins une lettre.");
+    	this.addFieldValidator( this.fieldPassword, null,
+			(String value) -> ( UserAccountRegister.getPasswordStrength(value) > MIN_PASSWORD_STRENGTH ),
+			"Suffisamment fort.");
+    	this.addFieldValidator( fieldConfirmPassword, null,
+    		(String value) -> value.equals(this.fieldPassword.getText()),
+			"Correspond.");
+    }
+    
+    private void addFieldValidator(TextField field, Region anchorNode, FieldValidator validator, String message) {
+    	VBox popupContent = (VBox) this.getValidationPopup(field, anchorNode).getContent().get(0);
     	
-    	VBox popupContent = (VBox) validationPopup.getContent().get(0);
         Label validatorLabel = new Label(message);
-        validatorLabel.getStyleClass().add("validationLabel");
     	popupContent.getChildren().add(validatorLabel);
-
+    	
     	field.textProperty().addListener((observable, oldValue, newValue) -> {
-    		validatorLabel.getStyleClass().remove("validLabel");;
+    		validatorLabel.getStyleClass().remove("valid");;
             if(validator.validate(newValue)){
-            	validatorLabel.getStyleClass().add("validLabel");
+            	validatorLabel.getStyleClass().add("valid");
             }
             
-            field.getStyleClass().remove("validField");
-            if (popupContent.lookupAll(".validLabel").size() == popupContent.getChildren().size())
+            field.getStyleClass().remove("valid");
+            if (popupContent.lookupAll(".validationMessages Label.valid").size() == popupContent.lookupAll(".validationMessages Label").size())
             {
-            	field.getStyleClass().add("validField");
+            	field.getStyleClass().add("valid");
             }
 
-            submitButton.setDisable(this.lookupAll(".requiredField.validField").size() != this.lookupAll(".requiredField").size() );
+            submitButton.setDisable(this.lookupAll(".requiredField.valid").size() != this.lookupAll(".requiredField").size() );
     	});
     }
     
-    private static int getPasswordStrength(String password) {
+    
+    private Popup getValidationPopup(TextField field, Region anchorNode) {
+    	if ( !this.validationPopups.containsKey(field) ) {
+    		field.getStyleClass().add("requiredField");
+            Popup validationPopup = new Popup();
+        	validationPopup.autoHideProperty().set(true); // hide on any key/mouse event
+        	validationPopup.setConsumeAutoHidingEvents(false); // hiding key/mouse event can also focus another field or manipulate window
+        	VBox messages = new VBox();
+        	messages.getStyleClass().add("validationMessages");
+            validationPopup.getContent().add(messages);
+            
+            this.validationPopups.put(field, validationPopup);
+            
+            final Region anchor = anchorNode==null?field:anchorNode;
+
+        	field.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        		if (newValue) { 
+                	Point2D screenPos = anchor.localToScreen(0.0,anchor.getHeight());
+                	validationPopup.show(field.getScene().getWindow(), screenPos.getX(), screenPos.getY() );
+        		}
+        	});
+        	
+       
+        	field.textProperty().addListener((observable, oldValue, newValue) -> {
+            	Point2D screenPos = anchor.localToScreen(0.0,anchor.getHeight());
+            	Platform.runLater(()->{ // runLater needed to avoid IllegalStateException when running unit tests without FXRobot
+            		validationPopup.show(field.getScene().getWindow(), screenPos.getX(), screenPos.getY() );
+            	});
+        	});
+    	}
+    	
+    	return this.validationPopups.get(field);
+    }
+    
+    private static double getPasswordStrength(String password) {
     	int possibleChars = 0;
     	
     	ArrayList<char[]> checkRanges = new ArrayList<char[]>();
@@ -151,10 +150,10 @@ public class UserAccountRegister extends GridPane{
     	}
     	
         if ( password.matches("^.*\\W.*$") ) { // caractère spécial
-            possibleChars += 100;
+            possibleChars += 50;
         }
         
-        return (int) ( password.length() *  Math.log(possibleChars)/Math.log(2) );
+        return password.length() *  Math.log(possibleChars)/Math.log(2);
     }
     
     
