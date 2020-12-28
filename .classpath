@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="assets"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jdbc_h2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jdbc_sqlite"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/bcrypt"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

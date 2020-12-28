@@ -10,7 +10,8 @@ import org.testfx.api.FxToolkit;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit.ApplicationTest;
 
-import controller.UserAccountRegister;
+import controller.UserAccountRegisterForm;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,14 +25,14 @@ import javafx.stage.Stage;
 public class Test4 extends ApplicationTest {
     private TextField fieldUsername, fieldEmail, fieldFirstName, fieldName, fieldCity;
     private PasswordField fieldPassword, fieldConfirmPassword;
-    private UserAccountRegister form;
+    private UserAccountRegisterForm form;
 
     /**
      * Will be called with {@code @Before} semantics, i. e. before each test method.
      */
     @Override
     public void start(Stage stage) {
-        form = new UserAccountRegister();
+        form = new UserAccountRegisterForm();
         //button.setOnAction(actionEvent -> button.setText("clicked!"));
         stage.setScene(new Scene(form));
         stage.show();
@@ -59,18 +60,13 @@ public class Test4 extends ApplicationTest {
 
     @Test
     public void email_field_validation() {
-    	fieldEmail.textProperty().set("test@test.com");
-    	fieldPassword.textProperty().set("test@test.com");
-    	
-    	
-    	assertTrue(fieldEmail.getStyleClass().contains("valid"));
-    	/*Button submitButton = lookup("#submitButton").query();
-
-    	
-    	
-    	clickOn("#fieldEmail");
-    	write("test@test.com");*/
-    	
+    	Platform.runLater(()->{ // runLater needed to avoid IllegalStateException when running unit tests without FXRobot
+	    	fieldEmail.textProperty().set("test@test.com");
+	    	fieldPassword.textProperty().set("test@test.com");
+	    	
+	    	
+	    	assertTrue(fieldEmail.getStyleClass().contains("valid"));
+    	});
     }
 
 
