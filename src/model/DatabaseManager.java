@@ -14,10 +14,12 @@ public class DatabaseManager {
     protected static String connLogin;
     protected static String connPassword;	
 
-    public static void setConnectionParameters(String url, String login, String password) {
+    public static void setConnectionParameters(String url, String login, String password) throws SQLException {
+    	disconnect();
     	connURL= url;
     	connLogin = login;
     	connPassword = password;
+    	getConnection();
     }
 
     public static String getType(){
@@ -28,7 +30,7 @@ public class DatabaseManager {
 		if (conn == null || conn.isClosed()) {
 	        conn = DriverManager.getConnection(connURL, connLogin, connPassword);
 		}
-    	
+
         return conn;
     }
     

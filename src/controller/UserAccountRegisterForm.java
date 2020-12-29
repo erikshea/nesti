@@ -2,9 +2,11 @@ package controller;
 
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import form.ValidatedField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -18,29 +20,45 @@ import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
+import model.RegisteredUser;
+import model.RegisteredUserDAO;
 
 public class UserAccountRegisterForm extends GridPane{
     private static final int MIN_PASSWORD_STRENGTH=100;
     private UserAccountControl mainController;	// for access to other controllers
     private HashMap<TextField, Popup> validationPopups = new HashMap<>(); // Stores validation Popup objects
     @FXML private Text mainHeader;
-    @FXML private TextField fieldUsername, fieldEmail, fieldFirstName, fieldName, fieldCity;
+    @FXML private TextField fieldUsername, fieldEmail, fieldFirstName, fieldLastName, fieldCity;
     @FXML private PasswordField fieldPassword, fieldConfirmPassword;
     @FXML private Button submitButton;
     @FXML private ProgressBar passwordIndicator;
+	@FXML private ValidatedField testField;
+    
     @FXML protected void handleSubmitButtonAction(ActionEvent event) {
-       // actiontarget.setText("Sign in button pressed");
+		var newUser = new RegisteredUser(
+				fieldUsername.getText(),
+				fieldEmail.getText(),
+				fieldFirstName.getText(),
+				fieldLastName.getText(),
+				fieldCity.getText(),
+				fieldPassword.getText()
+		);
+		try {
+			RegisteredUserDAO.insert(newUser);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
     }
     
     // Interface for validator with one method passed in lambda function
-	interface FieldValidator {
-		  boolean validate(String fieldValue);
-	}
+
     
     /**
      * Set up gui elements
      */
     @FXML private void initialize() {
+    	List.of("test","test2","test3").forEach( System.out::println );
+    	
     	// Password strength bar updates when password changes
     	this.fieldPassword.textProperty().addListener((observable, oldValue, newValue) -> {
     		var progress = passwordStrength(newValue)/(2*MIN_PASSWORD_STRENGTH);
@@ -56,13 +74,27 @@ public class UserAccountRegisterForm extends GridPane{
     			this.passwordIndicator.getStyleClass().add("very-poor");
     		}
     	});
-    	
+
+
+    	this.addFieldValidators();
+
+    }
+	interface FieldValidator {
+		  boolean validate(String fieldValue);
+	}
+    private void addFieldValidators() {
     	this.addFieldValidator( this.fieldEmail, null,
 			(val) -> val.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"),
 			"Valide."); // email regex source: https://emailregex.com/
+    	this.addFieldValidator( this.fieldEmail, null,
+			(val) -> RegisteredUserDAO.find("email", val) == null,
+			"Email libre.");
     	this.addFieldValidator( this.fieldUsername, null,
 			(val) -> val.matches("^[\\w-]+$"),
 			"Constitué de lettres non-accentuées, de chiffres, et des signes moins et sous-tiret.");
+    	this.addFieldValidator( this.fieldUsername, null,
+			(val) -> RegisteredUserDAO.find("username", val) == null,
+			"Nom d'utilisateur libre.");
     	this.addFieldValidator( this.fieldPassword, this.passwordIndicator,
 			(val) -> val.matches("^.*[0-9].*$"),
 			"Contient au moins un chiffre.");
@@ -76,6 +108,7 @@ public class UserAccountRegisterForm extends GridPane{
     		(val) -> val.equals(this.fieldPassword.getText()),
 			"Correspond.");
     }
+    
     
     private void addFieldValidator(TextField field, Region anchorNode, FieldValidator validator, String message) {
     	var popupContent = (VBox) this.getValidationPopup(field, anchorNode).getContent().get(0);

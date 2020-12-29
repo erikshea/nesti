@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import controller.UserAccountRegisterForm?>
+<?import controller.UserAccountLoginForm?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.text.Text?>
 
 <fx:root type="javafx.scene.layout.BorderPane"
-	xmlns:fx="http://javafx.com/fxml">
+	xmlns:fx="http://javafx.com/fxml"
+	styleClass="userAccount">
 	<top>
 		<MenuBar>
 			<menus>
-				<Menu text="File">
-					<MenuItem fx:id="quit" text="Quit" />
+				<Menu text="Fichier">
+					<MenuItem fx:id="quitMenu" text="Quitter" />
+				</Menu>
+				<Menu text="Base de données">
+					<MenuItem fx:id="databaseSettingsMenu" text="Réglages" />
+					<MenuItem fx:id="databaseResetMenu" text="Ré-initialiser" />
+					<MenuItem fx:id="databaseRepopulateMenu" text="Ré-initialiser avec des données" />
+				</Menu>
+				<Menu text="Afficher">
+					<MenuItem fx:id="registerAccountMenu" text="Nouveau compte" />
+					<MenuItem fx:id="connectMenu" text="Connexion" />
+					<MenuItem fx:id="accountInfoMenu" text="Informations" />
 				</Menu>
 			</menus>
 		</MenuBar>
 	</top>
-	<center>
-		<UserAccountRegisterForm fx:id="registerForm"/>
-	</center>
 </fx:root>

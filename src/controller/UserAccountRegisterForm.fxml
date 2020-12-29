@@ -8,11 +8,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ProgressBar?>
+<?import form.ValidatedPasswordField?>
 
 <fx:root type="javafx.scene.layout.GridPane"
-	xmlns:fx="http://javafx.com/fxml"
-	styleClass="userAccount">
-	<Text fx:id="mainHeader" text="Nouveau compte utilisateur" GridPane.columnSpan="2"/>
+	xmlns:fx="http://javafx.com/fxml" styleClass="accountForm,validatedForm">
+	<Text styleClass="mainHeader" text="Nouveau compte utilisateur" GridPane.columnSpan="2"/>
 
  	<VBox GridPane.rowIndex="1" GridPane.columnSpan="2">
 	    <Label text="Nom d'utilisateur"/>

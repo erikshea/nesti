@@ -31,6 +31,16 @@ public class RegisteredUser {
         this.registration_date = new SimpleStringProperty(formatter.format(new Date()));
     }
 
+    public RegisteredUser(String username, String email, String firstName, String lastName, String city, String plaintextPassword) {
+    	this();
+    	this.setUsername(username);
+    	this.setEmail(email);
+    	this.setFirstName(firstName);
+    	this.setLastName(lastName);
+    	this.setCity(city);
+    	this.setPasswordHashFromPlainText(plaintextPassword);
+    }
+    
 	public Integer getUserId() {
 		return user_id.get();
 	}
@@ -96,7 +106,8 @@ public class RegisteredUser {
 	}
 	
 	public void setPasswordHashFromPlainText(String plaintextPassword) {
-		var hash = BCrypt.with(LongPasswordStrategies.truncate(Version.VERSION_2A)).hashToString(6, plaintextPassword.toCharArray());
+		var hash = BCrypt.with(LongPasswordStrategies.truncate(Version.VERSION_2A))
+			.hashToString(6, plaintextPassword.toCharArray());
 		this.setPasswordHash(hash);
 	}
 

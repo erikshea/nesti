@@ -25,12 +25,11 @@ public class NestiUserAccountMain extends Application {
 		try {
 			var mainWindow = new UserAccountControl(); // Main window is handled by its own controller
 			var scene = new Scene(mainWindow);	// Set window size, with main window controller as root
-
 			// Context menus exist outside of node tree, so their styling done in scene
 			scene.getStylesheets().add(this.getClass().getResource("UserAccount.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Nesti Account Manager");
-			primaryStage.setResizable(false); // Disable window resizing. TODO: implement GUI scaling
+			primaryStage.setResizable(false); 
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

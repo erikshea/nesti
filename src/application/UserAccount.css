@@ -41,12 +41,12 @@
 	-fx-fill-width: true;
 }
 
-#mainHeader{
+.mainHeader{
     -fx-font-weight: bold; 
     -fx-font-size: 24px;
 }
 
-.userAccount{
+.accountForm{
     -fx-font-family: Ubuntu;
     -fx-font-size: 16px;
     -fx-padding: 30 30 30 30;
@@ -54,17 +54,17 @@
     -fx-vgap: 30;
 }
 
-.userAccount Label{
+.accountForm Label{
     -fx-font-size: 18px;
     -fx-font-weight: bold; 
 }
 
 
-.userAccount VBox{
+.accountForm VBox{
 	-fx-fill-width: true;
 }
 
-.userAccount VBox>*{
+.accountForm VBox>*{
 	-fx-max-width: Infinity;
 }
 
