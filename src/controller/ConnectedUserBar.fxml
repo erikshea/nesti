@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root type="javafx.scene.layout.HBox"
+	xmlns:fx="http://javafx.com/fxml">
+	<HBox>
+		<Label styleClass="description" fx:id="connectedUserBarDescription"/>
+		<Label styleClass="name" fx:id="connectedUserBarUser"/>
+	</HBox>
+	<Button fx:id="connectedUserBarButton" onAction="#buttonAction"/>
+</fx:root>

@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 public class RegisteredUserDAO {
 	private static final String TABLE_NAME = "registered_user";
 	
@@ -28,20 +29,20 @@ public class RegisteredUserDAO {
     private static RegisteredUser getFromResultSet(ResultSet rs) throws SQLException
     {
     	RegisteredUser user = null;
-        if (rs != null && !rs.isClosed()) {
-        	if ( !DatabaseManager.getType().equals("sqlite" ) ) {
-        		rs.next();
+
+        if (rs != null && !rs.isClosed() ) {
+        	if ( DatabaseManager.getType().equals("sqlite") || rs.next() ) { // rs.next needs to be called before with mysql and checked against false
+	        	user = new RegisteredUser();
+	        	user.setUserId(rs.getInt("user_id"));
+	        	user.setUsername(rs.getString("username"));
+	        	user.setEmail(rs.getString("email"));
+	        	user.setFirstName(rs.getString("first_name"));
+	        	user.setLastName(rs.getString("last_name"));
+	        	user.setCity(rs.getString("city"));
+	        	user.setPasswordHash(rs.getString("password_hash"));
+	        	user.setRegistrationDate(rs.getString("registration_date"));
         	}
-        	user = new RegisteredUser();
-        	user.setUserId(rs.getInt("user_id"));
-        	user.setUsername(rs.getString("username"));
-        	user.setEmail(rs.getString("email"));
-        	user.setFirstName(rs.getString("first_name"));
-        	user.setLastName(rs.getString("last_name"));
-        	user.setCity(rs.getString("city"));
-        	user.setPasswordHash(rs.getString("password_hash"));
-        	user.setRegistrationDate(rs.getString("registration_date"));
-        	if ( DatabaseManager.getType().equals("sqlite" ) ) {
+        	if ( DatabaseManager.getType().equals("sqlite" ) ) {	// rs.next needs to be called after with sqlite
         		rs.next();
         	}
         }
@@ -129,9 +130,11 @@ public class RegisteredUserDAO {
 	
 	public static void populateTable() throws SQLException {
 		resetTable();
+		insert(new RegisteredUser("a", "a@a.a", "", "", "", "1aaaaaaaaaaaaaaaaaaaaaa"));
 		insert(new RegisteredUser("judy", "dsq@d.dd", "", "", "", "1ddddddddddddddddddddddddd"));
 		insert(new RegisteredUser("bob", "bobby@bob.bob", "Bobby", "Brown", "", "2bobb2ypassdddddddd"));
 		insert(new RegisteredUser("jack", "jacky@d.dd", "", "", "", "dssqqsqq1ytyuytuyutytuyut"));
+		insert(new RegisteredUser("stacy", "s@s.s", "", "", "", "ssssssssssssssssssssss1"));
 		insert(new RegisteredUser("erik", "hoopsnale@gmail.com", "", "", "", "dssqqsqq1ytyuytuyutytuyut"));
 	}
 	

@@ -2,11 +2,9 @@ package model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
+
+import application.ApplicationSettings;
 
 public class DatabaseManager {
     protected static Connection conn = null;
@@ -19,6 +17,36 @@ public class DatabaseManager {
     	connURL= url;
     	connLogin = login;
     	connPassword = password;
+    	getConnection();
+		if (getType().equals("mysql")) {
+			DatabaseManager.getConnection().createStatement().execute(
+				"CREATE DATABASE IF NOT EXISTS " + ApplicationSettings.get("databaseName") + ";"
+			);
+		}
+    }
+    
+    public static void setConnectionParameters(String type, String address, String name, String login, String password) throws SQLException {
+    	disconnect();
+    	connURL= "jdbc:" + type + (type.equals("sqlite")?":":"://")
+				+ address.replaceFirst("/*$", ""); // remove trailing slashes from database address
+
+    	connLogin = login;
+    	connPassword = password;
+    	
+		if (getType().equals("mysql")) {
+			DatabaseManager.getConnection().createStatement().execute(
+				"CREATE DATABASE IF NOT EXISTS " + ApplicationSettings.get("databaseName") + ";"
+			);
+			disconnect();
+			
+		}
+		
+		connURL += "/" + name;
+		
+    	if (type.equals("sqlite")) {
+    		connURL += ".sqlite.db";
+    	}
+    	
     	getConnection();
     }
 

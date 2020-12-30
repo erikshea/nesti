@@ -1,25 +1,19 @@
 package test;
-import  org.junit.Assert;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.testfx.api.FxToolkit;
-import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit.ApplicationTest;
 
 import controller.UserAccountRegisterForm;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Test4 extends ApplicationTest {

@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.PasswordField?>
+<?import form.*?>
 
 <fx:root type="javafx.scene.layout.GridPane"
-	xmlns:fx="http://javafx.com/fxml">
-	<Text fx:id="loginHeader" text="Connection"/>
-	<Text styleClass="mainHeader" text="Nouveau compte utilisateur" GridPane.columnSpan="2"/>
+	xmlns:fx="http://javafx.com/fxml" styleClass="loginForm, accountForm">
+	<Text styleClass="mainHeader" text="Connection" GridPane.columnSpan="2"/>
 
- 	<VBox GridPane.rowIndex="1" GridPane.columnSpan="2">
-	    <Label text="Nom d'utilisateur ou email"/>
-	    <TextField fx:id="fieldConnectionIdentifier"/>
- 	</VBox>
- 	
- 	<VBox GridPane.rowIndex="2" GridPane.columnSpan="2">
-	    <Label text="Mote de passe"/>
-	    <TextField fx:id="fieldConnectionPassword"/>
- 	</VBox>
- 	
+	<BaseField GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="fieldConnectionIdentifier" labelText="Nom d'utilisateur ou email"/>
+	
+	<ValidatedBasePasswordField GridPane.rowIndex="2" GridPane.columnSpan="2" fx:id="fieldConnectionPassword" labelText="Mot de passe"/>
+
  	<HBox GridPane.rowIndex="3" GridPane.columnSpan="2" alignment="top_right" >
-        <Button fx:id="connectButton" text="Sign In" onAction="#handleConnectButtonAction"/>
+        <Button fx:id="registerButton" text="Créér un compte" onAction="#handleRegisterButtonAction"/>
+        <Button fx:id="connectButton" text="Se connecter" onAction="#handleConnectButtonAction"/>
     </HBox>
 </fx:root>

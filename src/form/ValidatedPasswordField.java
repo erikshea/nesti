@@ -1,32 +1,14 @@
 package form;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.function.Supplier;
-
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
-import javafx.beans.property.StringProperty;
-import javafx.fxml.FXML;
 
-public class ValidatedPasswordField  extends ValidatedField{
+public class ValidatedPasswordField  extends ValidatedBasePasswordField{
 	private int minimumPasswordStrength = 80;
 
     public ValidatedPasswordField() {
 		super();
-		this.getChildren().remove(this.field);
-		this.field = new PasswordField();
-		this.getChildren().add(this.field);
-		
-		var strengthBar = new ProgressBar();
+		var strengthBar = new ProgressBar(0);
 		this.field.textProperty().addListener((observable, oldValue, newValue) -> {
     		var progress = passwordStrength(newValue)/(2*this.minimumPasswordStrength);
     		strengthBar.setProgress(progress);
@@ -45,12 +27,21 @@ public class ValidatedPasswordField  extends ValidatedField{
 		this.validationPopupAnchor = strengthBar;
 		
     	this.addValidator(
-			(val) -> ( passwordStrength(val) >= this.minimumPasswordStrength ),
-			"Suffisamment fort.");
+			(val) -> passwordStrength(val) >= this.minimumPasswordStrength,
+			"Suffisamment fort."
+		);
+    	this.addValidator(
+			(val) -> val.matches("^.*[0-9].*$"),
+			"Contient au moins un chiffre."
+		);
+    	this.addValidator(
+			(val) -> val.matches("^.*[a-zA-Z].*$"),
+			"Contient au moins une lettre."
+		);
 	}
 
     
-    private static double passwordStrength(String password) {
+    protected static double passwordStrength(String password) {
     	var possibleChars = 0;
     	
     	for ( var checkRange:List.of("09", "az", "AZ") ) {

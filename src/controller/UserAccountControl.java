@@ -1,21 +1,17 @@
 package controller;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import application.ApplicationSettings;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import model.DatabaseManager;
-import model.RegisteredUser;
-import model.RegisteredUserDAO;
+import model.*;
 
 /**
  * Sets up main window and spawns menu, animal regions..
@@ -23,21 +19,31 @@ import model.RegisteredUserDAO;
  */
 public class UserAccountControl extends BorderPane{
 	@FXML private MenuItem  quitMenu, databaseSettingsMenu, databaseResetMenu, databaseRepopulateMenu, registerAccountMenu, connectMenu, accountInfoMenu;
-	@FXML private RegisteredUser loggedInUser;
-
+	@FXML ConnectedUserBar connectedUserBar;
+	
+	private ObjectProperty<RegisteredUser> loggedInUser = new SimpleObjectProperty<RegisteredUser>(new RegisteredUser());
 	private UserAccountRegisterForm registerForm;
 	private UserAccountLoginForm loginForm;
+	private UserAccountInfo accountInfoPane;
 	
 	/*
 	 * set up elements
 	 * */
 	public void initialize() {
-		var settingsDialog = new SettingsDialog();
+		this.getloggedInUserProperty().addListener( (e,oldUser,newUser)-> {
+			this.accountInfoMenu.setDisable(this.getLoggedInUser() == null);
+		} );
+		
+
+		
 		this.registerAccountMenu.setOnAction( e -> this.showRegisterForm() );
 		this.connectMenu.setOnAction( e -> this.showLoginForm() );
-		this.accountInfoMenu.setOnAction( e -> {} );
+		this.accountInfoMenu.setOnAction( e -> this.showAccountInfo() );
 		
 		this.quitMenu.setOnAction( e -> System.exit(0) );
+		
+		var settingsDialog = new SettingsDialog();
+		settingsDialog.setMainController(this);
 		this.databaseSettingsMenu.setOnAction( e -> settingsDialog.show() );
 		
 		this.databaseResetMenu.setOnAction( e -> {
@@ -48,7 +54,6 @@ public class UserAccountControl extends BorderPane{
 			}
 		});
 		
-		
 		this.databaseRepopulateMenu.setOnAction( e -> {
 			try {
 				RegisteredUserDAO.populateTable();
@@ -57,15 +62,45 @@ public class UserAccountControl extends BorderPane{
 			}
 		});
 		
-		
 		try {
 			setUpDatabaseFromSettings();
 		} catch (SQLException e) {}
-		
 
-    	Platform.runLater( ()-> this.showRegisterForm() );
-
+    	this.connectedUserBar.setMainController(this);
+    	
+    	this.setLoggedInUser(
+    			RegisteredUserDAO.find( "username", ApplicationSettings.get("loggedInUserUsername") )
+    	);
+    	Platform.runLater( ()-> this.showLoginForm() );
 	}
+	
+	public void showLoginForm(){
+		if ( this.loginForm == null ) {
+			this.loginForm = new UserAccountLoginForm();
+			this.loginForm.setMainController(this);
+		}
+		this.setBottom(this.loginForm);
+		this.getScene().getWindow().sizeToScene();
+	}
+	
+	public void showRegisterForm(){
+		if ( this.registerForm == null ) {
+			this.registerForm = new UserAccountRegisterForm();
+			this.registerForm.setMainController(this);
+		}
+		this.setBottom(this.registerForm);
+		this.getScene().getWindow().sizeToScene();
+	}
+	
+	public void showAccountInfo(){
+		if ( this.accountInfoPane == null ) {
+			this.accountInfoPane = new UserAccountInfo();
+			this.accountInfoPane.setMainController(this);
+		}
+		this.setBottom(this.accountInfoPane);
+		this.getScene().getWindow().sizeToScene();
+	}
+	
 	
 	public UserAccountControl(){
         var loader = new FXMLLoader(getClass().getResource("UserAccountControl.fxml"));	
@@ -80,45 +115,41 @@ public class UserAccountControl extends BorderPane{
 	}
 
 	public static void setUpDatabaseFromSettings() throws SQLException {
-		setUpDatabase (
+		DatabaseManager.setConnectionParameters(
 			ApplicationSettings.get("databaseType"),
 			ApplicationSettings.get("databaseAddress"),
 			ApplicationSettings.get("databaseName"),
 			ApplicationSettings.get("databaseLogin"),
 			ApplicationSettings.get("databasePassword")
 		);
-	}
-	
-	public void showLoginForm(){
-		if ( this.loginForm == null ) {
-			this.loginForm = new UserAccountLoginForm();
-		}
-		this.setBottom(this.loginForm);
-		this.getScene().getWindow().sizeToScene();
-	}
-	
-	public void showRegisterForm(){
-		if ( this.registerForm == null ) {
-			this.registerForm = new UserAccountRegisterForm();
-		}
-		this.setBottom(this.registerForm);
-		this.getScene().getWindow().sizeToScene();
-	}
-
-	
-	
-	public static void setUpDatabase(String type, String address, String name, String login, String password) throws SQLException {
-		
-		var connURL= "jdbc:" + type + ":"
-			+ address.replaceFirst("/*$", "") // remove trailing slashes from database address
-			+ "/" + name;
-		
-    	if (type.equals("sqlite")) {
-    		connURL += ".sqlite.db";
-    	}
-   
-		DatabaseManager.setConnectionParameters( connURL, login, password );
-		
 		RegisteredUserDAO.createTable();
 	}
+	
+
+	final public ObjectProperty<RegisteredUser> getloggedInUserProperty() {
+		return this.loggedInUser;
+	}
+	
+	public RegisteredUser getLoggedInUser() {
+		return this.loggedInUser.get();
+	}
+	
+	public void disconnectUser() {
+		this.setLoggedInUser(null);
+		
+		this.showLoginForm();
+	}
+	
+	
+	public void setLoggedInUser( RegisteredUser user ) {
+		if ( user == null ) {
+			ApplicationSettings.set("loggedInUserUsername", null);
+		} else {
+			ApplicationSettings.set("loggedInUserUsername", user.getUsername());
+			ApplicationSettings.set("loggedInUserPasswordHash", user.getPasswordHash());
+		}
+		
+		this.loggedInUser.set(user);
+	}
+	
 }

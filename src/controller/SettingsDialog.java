@@ -2,30 +2,28 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import application.ApplicationSettings;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventDispatchChain;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
-import javafx.stage.Window;
+import model.DatabaseManager;
+import javafx.event.ActionEvent;
 
 public class SettingsDialog extends Dialog<Boolean> {
+	private UserAccountControl mainController;
 	@FXML private ButtonType okButton, defaultsButton, saveButton;
 	@FXML private TextField settingsAddress, settingsDatabaseName, settingsLogin, settingsPassword;
-	@FXML ComboBox databaseType;
-
+	@FXML ComboBox<String> databaseType;
+	public void setMainController(UserAccountControl mainController) {
+		this.mainController = mainController;
+	}
+	
 	public SettingsDialog(){
         var loader = new FXMLLoader(getClass().getResource("SettingsDialog.fxml"));	// load .fxml 
         loader.setRoot(this);																	// as root
@@ -58,7 +56,7 @@ public class SettingsDialog extends Dialog<Boolean> {
         
         this.getDialogPane().lookupButton(saveButton).addEventFilter(ActionEvent.ACTION, event -> {
 	    	try {
-	    		UserAccountControl.setUpDatabase(
+	    		DatabaseManager.setConnectionParameters(
 					databaseType.getValue().toString(),
 					settingsAddress.getText(),
 					settingsDatabaseName.getText(),
@@ -70,7 +68,9 @@ public class SettingsDialog extends Dialog<Boolean> {
 	        	ApplicationSettings.set("databaseName", settingsDatabaseName.getText());
 	        	ApplicationSettings.set("databaseLogin", settingsLogin.getText());
 	        	ApplicationSettings.set("databasePassword", settingsPassword.getText());
-			} catch (Exception e) {
+	        	this.mainController.disconnectUser();
+	    	} catch (Exception e) {
+				e.printStackTrace();
 				Alert a = new Alert(AlertType.WARNING);
 				a.setHeaderText("Problème de connection");
 				a.setContentText("Impossible d'établir une connection.");

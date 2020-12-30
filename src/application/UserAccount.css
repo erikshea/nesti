@@ -5,6 +5,47 @@
     src: url("../../assets/fonts/Ubuntu-Regular.ttf"),
 }
 
+ConnectedUserBar{
+	-fx-padding: 5;
+	-fx-alignment: CENTER_RIGHT;
+	-fx-spacing: 5;
+	-fx-fill-height: true;
+}
+
+ConnectedUserBar  * {
+	-fx-alignment: CENTER;
+}
+
+ConnectedUserBar HBox {
+	-fx-fill-height: true;
+}
+
+
+ConnectedUserBar Button {
+	-fx-pref-height: 15;
+	-fx-background-radius: 3;
+}
+
+ConnectedUserBar Label {
+    -fx-font-size: 16px;
+}
+
+.loginForm > HBox{
+	-fx-spacing: 10;
+}
+
+.userRegistrationDate {
+	-fx-spacing: 5;
+}
+
+#connectedUserBarUser{
+	-fx-font-weight: bold;
+}
+
+
+.notConnected #connectedUserBarUser{
+	visibility: hidden;
+}
 
 .menu-item {
     -fx-font-family: Ubuntu;
@@ -60,44 +101,47 @@
 }
 
 
-.accountForm VBox{
+.accountForm .requiredField{
 	-fx-fill-width: true;
 }
 
-.accountForm VBox>*{
+.requiredField > *{ /* not applied?*/
 	-fx-max-width: Infinity;
 }
 
-.requiredField{
+.validatedForm .requiredField TextField,
+.validatedForm .requiredField PasswordField{
 	-fx-background-color: #CC6C1D;
 }
 
-.requiredField.valid{
+.validatedForm .requiredField.valid TextField,
+.validatedForm .requiredField.valid PasswordField{
 	-fx-background-color: #A7B22B;
 }
 
-#passwordIndicator{
+ValidatedPasswordField ProgressBar{
 	-fx-pref-height: 8;
+	-fx-max-width: Infinity;
 }
 
-#passwordIndicator > *{
+ValidatedPasswordField ProgressBar > *{
     -fx-background-insets: 0;
 }
 
 
-#passwordIndicator.very-poor{
+ValidatedPasswordField ProgressBar.very-poor{
 	-fx-accent: firebrick ;
 }
 
-#passwordIndicator.poor{
+ValidatedPasswordField ProgressBar.poor{
 	-fx-accent: orangered ;
 }
 
-#passwordIndicator.good{
+ValidatedPasswordField ProgressBar.good{
 	-fx-accent: blue  ;
 }
 
-#passwordIndicator.great{
+ValidatedPasswordField ProgressBar.great{
 	-fx-accent: green ;
 }
 .menu-item {
