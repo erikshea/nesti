@@ -12,15 +12,14 @@ public class ValidatedConfirmPasswordField  extends ValidatedBasePasswordField{
     		(val) -> this.getMatchingPasswordField() != null && val.equals(this.getMatchingPasswordField().getText()),
 			"Correspond."
     		);
-		
-		Platform.runLater(()->{
-			this.getMatchingPasswordField().textProperty().addListener(e->this.applyValidators());
-		});
 	}
-    
 
     public void setFieldToMatch(String fieldSelector) {
     	this.matchingPasswordFieldSelector = fieldSelector;
+    	Platform.runLater( ()-> {
+			this.getMatchingPasswordField().textProperty().addListener(e->this.applyValidators());
+    		this.applyValidators();
+    	});
     }
     
     public String getFieldToMatch() {

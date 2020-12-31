@@ -1,11 +1,12 @@
 package form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
-
-
 
 public class ValidatedField  extends BaseField{
 	public Popup validationPopup = null;
@@ -13,6 +14,7 @@ public class ValidatedField  extends BaseField{
 	protected String disableButtonSelector = null;
 	protected Region form;
 	protected boolean isForcedValid = false;
+	private List<FieldValidator> specialCases = new ArrayList<>();
 	
 	public interface FieldValidator {
 		  boolean validate(String fieldValue);
@@ -45,13 +47,13 @@ public class ValidatedField  extends BaseField{
     	popupContent.getChildren().add(validatorLabel);
     	
     	field.textProperty().addListener((observable, oldValue, newValue) -> {
-    		validatorLabel.getStyleClass().remove("valid");;
+    		validatorLabel.getStyleClass().remove("valid");
             if(validator.validate(newValue)){
             	validatorLabel.getStyleClass().add("valid");
             }
             
             this.getStyleClass().remove("valid");
-            if (this.isForcedValid || popupContent.lookupAll(".validationMessages Label.valid").size() == popupContent.lookupAll(".validationMessages Label").size())
+            if (this.specialCasesValidate() || popupContent.lookupAll(".validationMessages Label.valid").size() == popupContent.lookupAll(".validationMessages Label").size())
             {
             	this.getStyleClass().add("valid");
             }
@@ -65,6 +67,8 @@ public class ValidatedField  extends BaseField{
                 }
             }
     	}); 
+    	
+    	applyValidators();
     }
     
     protected Popup getValidationPopup() {
@@ -102,14 +106,20 @@ public class ValidatedField  extends BaseField{
     
     
     public void addSpecialCase(FieldValidator validator) {
-    	this.field.textProperty().addListener((observable, oldValue, newValue) -> {
-    		this.getStyleClass().remove("valid");
-    		this.isForcedValid = validator.validate(newValue);
-    		if (this.isForcedValid) {
-    			this.getStyleClass().add("valid");
+    	this.specialCases.add(validator);
+    	this.applyValidators();
+    }	
+    
+    private boolean specialCasesValidate() {
+    	boolean result = false;
+    	
+    	for ( var v:this.specialCases) {
+    		if (v.validate(this.getText())) {
+    			result = true;
     		}
-    	}); 
-    	applyValidators();
+    	}
+    	
+    	return result;
     }
     
     @Override

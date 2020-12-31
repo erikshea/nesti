@@ -24,7 +24,7 @@ public class UserAccountInfo extends GridPane{
     @FXML ValidatedConfirmPasswordField fieldConfirmModifyPassword;
     @FXML Text registrationDate;
     
-	private ObjectProperty<RegisteredUser> loggedInUser = new SimpleObjectProperty<>();
+	private ObjectProperty<RegisteredUser> loggedInUser = new SimpleObjectProperty<>(new RegisteredUser());
     private ObjectProperty<RegisteredUser> editedUser = new SimpleObjectProperty<>();
 
 
@@ -34,12 +34,12 @@ public class UserAccountInfo extends GridPane{
     			"Correspond avec l'ancien mot de passe."
     		);
     	this.fieldModifyUsername.addValidator(
-			(val) -> 	this.loggedInUser.get().getUsername().equals(val)
+			(val) -> 	val.equals(loggedInUser.get().getUsername())
 					|| 	RegisteredUserDAO.find("username", val) == null,
 			"Nom d'utilisateur libre."
 		);
     	this.fieldModifyEmail.addValidator(
-			(val) ->	this.loggedInUser.get().getEmail().equals(val)
+			(val) ->	val.equals(loggedInUser.get().getEmail())
 					||  RegisteredUserDAO.find("email", val) == null,
 			"Email libre."
 		);
@@ -47,9 +47,6 @@ public class UserAccountInfo extends GridPane{
     	this.fieldModifyPassword.addSpecialCase(
 			(val) -> val.length() == 0
 		);
-    	
-    	// Confirm password field should be revalidated with corresponding password special case when it has finished loading
-		Platform.runLater( ()-> this.fieldConfirmModifyPassword.applyValidators() );
 		
 		this.loggedInUser.addListener((e,oldValue,newValue)->{
 			if (newValue != null ) {

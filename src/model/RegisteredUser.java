@@ -130,7 +130,7 @@ public class RegisteredUser implements Cloneable{
 
 	public boolean isPassword(String plaintextPassword) {
 		var verifyer = BCrypt.verifyer(Version.VERSION_2A, LongPasswordStrategies.truncate(Version.VERSION_2A));
-		return verifyer.verify(plaintextPassword.toCharArray(), this.getPasswordHash()).verified;
+		return this.getPasswordHash() != null && verifyer.verify(plaintextPassword.toCharArray(), this.getPasswordHash()).verified;
 	}
 
 	public final StringProperty getUsernameProperty() {

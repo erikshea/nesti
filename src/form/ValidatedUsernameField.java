@@ -1,7 +1,5 @@
 package form;
 
-
-
 public class ValidatedUsernameField  extends ValidatedField{
     public ValidatedUsernameField() {
 		super();
