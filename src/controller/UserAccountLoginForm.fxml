@@ -15,7 +15,6 @@
 	<ValidatedBasePasswordField GridPane.rowIndex="2" GridPane.columnSpan="2" fx:id="fieldConnectionPassword" labelText="Mot de passe"/>
 
  	<HBox GridPane.rowIndex="3" GridPane.columnSpan="2" alignment="top_right" >
-        <Button fx:id="registerButton" text="Créér un compte" onAction="#handleRegisterButtonAction"/>
         <Button fx:id="connectButton" text="Se connecter" onAction="#handleConnectButtonAction"/>
     </HBox>
 </fx:root>

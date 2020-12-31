@@ -1,34 +1,36 @@
 package model;
 
 import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import at.favre.lib.crypto.bcrypt.BCrypt.Version;
 import at.favre.lib.crypto.bcrypt.LongPasswordStrategies;
 
-public class RegisteredUser {
-	private IntegerProperty user_id;
+public class RegisteredUser implements Cloneable{
+	private IntegerProperty userId;
     private StringProperty username;
     private StringProperty email;
-    private StringProperty first_name;
-    private StringProperty last_name;
+    private StringProperty firstName;
+    private StringProperty lastName;
     private StringProperty city;
-    private StringProperty password_hash;
-    private StringProperty registration_date;
+    private StringProperty passwordHash;
+    private StringProperty registrationDate;
     
     //Constructor
     public RegisteredUser() {
-        this.user_id = new SimpleIntegerProperty();
+        this.userId = new SimpleIntegerProperty();
         this.username = new SimpleStringProperty();
         this.email = new SimpleStringProperty();
-        this.first_name = new SimpleStringProperty();
-        this.last_name = new SimpleStringProperty();
+        this.firstName = new SimpleStringProperty();
+        this.lastName = new SimpleStringProperty();
         this.city = new SimpleStringProperty();
-        this.password_hash = new SimpleStringProperty();
+        this.passwordHash = new SimpleStringProperty();
         
         var formatter = new SimpleDateFormat("dd/MM/yyyy");  
-        this.registration_date = new SimpleStringProperty(formatter.format(new Date()));
+        this.registrationDate = new SimpleStringProperty(formatter.format(new Date()));
     }
 
     public RegisteredUser(String username, String email, String firstName, String lastName, String city, String plaintextPassword) {
@@ -41,12 +43,27 @@ public class RegisteredUser {
     	this.setPasswordHashFromPlainText(plaintextPassword);
     }
     
+    @Override
+    public RegisteredUser clone() {
+		RegisteredUser user = new RegisteredUser(
+			this.getUsername(),
+			this.getEmail(),
+			this.getFirstName(),
+			this.getLastName(),
+			this.getCity(),
+			this.getPasswordHash()
+    	);
+    	user.setUserId(this.getUserId());
+    	user.setRegistrationDate(this.getRegistrationDate());
+        return user;
+    }
+    
 	public Integer getUserId() {
-		return user_id.get();
+		return userId.get();
 	}
 
 	public void setUserId(Integer user_id) {
-		this.user_id.set(user_id);
+		this.userId.set(user_id);
 	}
 
 	public String getUsername() {
@@ -66,19 +83,19 @@ public class RegisteredUser {
 	}
 
 	public String getFirstName() {
-		return first_name.get();
+		return firstName.get();
 	}
 
 	public void setFirstName(String first_name) {
-		this.first_name.set(first_name);
+		this.firstName.set(first_name);
 	}
 
 	public String getLastName() {
-		return last_name.get();
+		return lastName.get();
 	}
 
 	public void setLastName(String last_name) {
-		this.last_name.set(last_name);
+		this.lastName.set(last_name);
 	}
 
 	public String getCity() {
@@ -90,19 +107,19 @@ public class RegisteredUser {
 	}
 
 	public String getPasswordHash() {
-		return password_hash.get();
+		return passwordHash.get();
 	}
 
 	public void setPasswordHash(String password_hash) {
-		this.password_hash.set(password_hash);
+		this.passwordHash.set(password_hash);
 	}
 
 	public String getRegistrationDate() {
-		return registration_date.get();
+		return registrationDate.get();
 	}
 
 	public void setRegistrationDate(String register_date) {
-		this.registration_date.set(register_date);
+		this.registrationDate.set(register_date);
 	}
 	
 	public void setPasswordHashFromPlainText(String plaintextPassword) {
@@ -115,4 +132,34 @@ public class RegisteredUser {
 		var verifyer = BCrypt.verifyer(Version.VERSION_2A, LongPasswordStrategies.truncate(Version.VERSION_2A));
 		return verifyer.verify(plaintextPassword.toCharArray(), this.getPasswordHash()).verified;
 	}
+
+	public final StringProperty getUsernameProperty() {
+		return this.username;
+	}
+	
+	public final StringProperty getEmailProperty() {
+		return this.email;
+	}
+	
+	public final StringProperty getFirstNameProperty() {
+		return this.firstName;
+	}
+	
+	public final StringProperty getLastNameProperty() {
+		return this.lastName;
+	}
+	
+	public final StringProperty getCityProperty() {
+		return this.city;
+	}
+	
+	public final StringProperty getPasswordHashProperty() {
+		return this.passwordHash;
+	}
+	
+	public final StringProperty getRegistrationDateProperty() {
+		return this.registrationDate;
+	}
+	
+	
 }

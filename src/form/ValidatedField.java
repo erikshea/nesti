@@ -12,6 +12,7 @@ public class ValidatedField  extends BaseField{
 	public Region validationPopupAnchor = null;
 	protected String disableButtonSelector = null;
 	protected Region form;
+	protected boolean isForcedValid = false;
 	
 	public interface FieldValidator {
 		  boolean validate(String fieldValue);
@@ -31,7 +32,7 @@ public class ValidatedField  extends BaseField{
 	}
 
 	public Region getForm() {
-		if (this.form == null) {
+		if (this.form == null && this.getScene() != null) {
 			this.form = (Region) this.getScene().lookup(".validatedForm");
 		}
 		return this.form;
@@ -50,16 +51,18 @@ public class ValidatedField  extends BaseField{
             }
             
             this.getStyleClass().remove("valid");
-            if (popupContent.lookupAll(".validationMessages Label.valid").size() == popupContent.lookupAll(".validationMessages Label").size())
+            if (this.isForcedValid || popupContent.lookupAll(".validationMessages Label.valid").size() == popupContent.lookupAll(".validationMessages Label").size())
             {
             	this.getStyleClass().add("valid");
             }
-            
-            Region buttonToDisable = (Region) this.getForm().lookup(this.disableButtonSelector);
-            
-            if (buttonToDisable != null) {
-            	buttonToDisable.setDisable(    this.getForm().lookupAll(".requiredField.valid").size()
-            								!= this.getForm().lookupAll(".requiredField").size() );
+        	
+            if ( this.getForm() != null ) {
+                Region buttonToDisable = (Region) this.getForm().lookup(this.disableButtonSelector);
+                
+                if (buttonToDisable != null) {
+                	buttonToDisable.setDisable(    this.getForm().lookupAll(".requiredField.valid").size()
+                								!= this.getForm().lookupAll(".requiredField").size() );
+                }
             }
     	}); 
     }
@@ -87,7 +90,9 @@ public class ValidatedField  extends BaseField{
             
             this.field.textProperty().addListener((observable, oldValue, newValue) -> {
             	var screenPos = anchor.localToScreen(0.0,anchor.getHeight());
-            	this.validationPopup.show(this.getScene().getWindow(), screenPos.getX(), screenPos.getY() );
+            	if ( this.getScene() != null ) {
+            		this.validationPopup.show(this.getScene().getWindow(), screenPos.getX(), screenPos.getY() );
+            	}
         	});
         	
     	}
@@ -98,10 +103,11 @@ public class ValidatedField  extends BaseField{
     
     public void addSpecialCase(FieldValidator validator) {
     	this.field.textProperty().addListener((observable, oldValue, newValue) -> {
-    		this.getStyleClass().remove("valid");;
-            if(validator.validate(newValue)){
-            	this.getStyleClass().add("valid");
-            }
+    		this.getStyleClass().remove("valid");
+    		this.isForcedValid = validator.validate(newValue);
+    		if (this.isForcedValid) {
+    			this.getStyleClass().add("valid");
+    		}
     	}); 
     	applyValidators();
     }
@@ -114,7 +120,7 @@ public class ValidatedField  extends BaseField{
     
     public void applyValidators() {
     	var temp = this.field.getText();
-    	this.setText("EcujwEGh3siX3EqRNeO48V5j1TNlbdYCzJGewQioUFC");
+    	this.setText("EcujwEGh3siX3EqRNeO48V5j1TNlbdYCzJGewQioUFCEcujwEGh3siX3EqRNeO48V5j1TNlbdYCzJGewQioUFCEcujwEGh3siX3EqRNeO48V5j1TNlbdYCzJGewQioUFCEcujwEGh3siX3EqRNeO48V5j1TNlbdYCzJGewQioUFC");
     	this.setText(temp);
     }
     

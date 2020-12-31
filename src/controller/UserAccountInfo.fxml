@@ -41,6 +41,6 @@
  		labelText="Confirmez le nouveau mot de passe" fieldToMatch="#fieldModifyPassword" disableButton="#submitButton"/>
 
  	<HBox GridPane.rowIndex="8" GridPane.columnSpan="2" alignment="top_right" >
-        <Button fx:id="saveButton" text="Enregistrer" onAction="#handleSaveButtonAction"/>
+        <Button fx:id="saveButton" text="Enregistrer" onAction="#handleSaveButtonAction" disable="true"/>
     </HBox>
 </fx:root>

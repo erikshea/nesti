@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import form.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -14,7 +16,8 @@ import javafx.scene.text.Text;
 import model.*;
 
 public class UserAccountRegisterForm extends GridPane{
-    private UserAccountControl mainController;	// for access to other controllers
+	private ObjectProperty<RegisteredUser> loggedInUser = new SimpleObjectProperty<>();
+	
     @FXML private Text mainHeader;
     @FXML private BaseField fieldFirstName, fieldLastName, fieldCity;
     @FXML private ValidatedUsernameField fieldUsername;
@@ -35,11 +38,10 @@ public class UserAccountRegisterForm extends GridPane{
 		);
 		try {
 			RegisteredUserDAO.insert(newUser);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		this.getMainController().setLoggedInUser(newUser);
-		this.getMainController().showAccountInfo();
+		this.loggedInUser.set(newUser);
     }
     
     // Interface for validator with one method passed in lambda function
@@ -75,19 +77,8 @@ public class UserAccountRegisterForm extends GridPane{
             throw new RuntimeException(exception);
         }
     }
-    
-
-	/**
-	 * Sets a reference to the main controller (for console, and to communicate with other controllers)
-	 * @param c main window controller
-	 */
-	void setMainController(UserAccountControl c)
-	{
-		this.mainController = c;
-	}
-
-	UserAccountControl getMainController()
-	{
-		return this.mainController;
-	}
+	
+    public final ObjectProperty<RegisteredUser> getLoggedInUserProperty() {
+    	return this.loggedInUser;
+    }
 }

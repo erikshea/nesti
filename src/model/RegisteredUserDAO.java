@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import application.DatabaseManager;
+
 
 public class RegisteredUserDAO {
 	private static final String TABLE_NAME = "registered_user";

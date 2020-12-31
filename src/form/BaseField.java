@@ -1,5 +1,6 @@
 package form;
 
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -29,5 +30,9 @@ public class BaseField  extends VBox{
     	this.label = new Label();
 		this.field = new TextField();
     	this.getChildren().addAll(this.label, this.field);
+	}
+	
+	public StringProperty textProperty() {
+		return this.field.textProperty();
 	}
 }

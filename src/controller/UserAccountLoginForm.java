@@ -2,6 +2,8 @@ package controller;
 import java.io.IOException;
 
 import form.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,24 +14,13 @@ import model.*;
 
 
 public class UserAccountLoginForm extends GridPane{
-    private UserAccountControl mainController;	// for access to other controllers
 	@FXML private BaseField fieldConnectionIdentifier;
 	@FXML private ValidatedBasePasswordField fieldConnectionPassword;
+	private ObjectProperty<RegisteredUser> loggedInUser = new SimpleObjectProperty<>();
     
-	/**
-	 * Sets a reference to the main controller (for console, and to communicate with other controllers)
-	 * @param c main window controller
-	 */
-	void setMainController(UserAccountControl c)
-	{
-		this.mainController = c;
-	}
-	public UserAccountControl getMainController()
-	{
-		return this.mainController;
-	}
-	public void initialize() {
-	}
+    public final ObjectProperty<RegisteredUser> getLoggedInUserProperty() {
+    	return this.loggedInUser;
+    }
 
 	public UserAccountLoginForm(){
         var loader = new FXMLLoader(getClass().getResource("UserAccountLoginForm.fxml"));	
@@ -58,12 +49,8 @@ public class UserAccountLoginForm extends GridPane{
 			a.setContentText("Vérifiez l'exactitude de vos paramètres.");
 			a.show();
     	} else {
-    		this.getMainController().setLoggedInUser(user);
-    		this.getMainController().showAccountInfo();
+    		this.loggedInUser.set(user);
     	}
     }
 
-    @FXML protected void handleRegisterButtonAction(ActionEvent event) {
-    	this.getMainController().showRegisterForm();
-    }
 }

@@ -31,6 +31,6 @@
  		labelText="Confirmez le mot de passe" fieldToMatch="#fieldPassword" disableButton="#submitButton"/>
  
     <HBox GridPane.rowIndex="7" GridPane.columnSpan="2" alignment="top_right" >
-        <Button fx:id="submitButton" text="Sign In" onAction="#handleSubmitButtonAction"/>
+        <Button fx:id="submitButton" text="Sign In" onAction="#handleSubmitButtonAction" disable="true"/>
     </HBox>
 </fx:root>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import application.ApplicationSettings;
+import application.DatabaseManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -12,17 +13,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
-import model.DatabaseManager;
+import model.RegisteredUser;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 
 public class SettingsDialog extends Dialog<Boolean> {
-	private UserAccountControl mainController;
 	@FXML private ButtonType okButton, defaultsButton, saveButton;
 	@FXML private TextField settingsAddress, settingsDatabaseName, settingsLogin, settingsPassword;
 	@FXML ComboBox<String> databaseType;
-	public void setMainController(UserAccountControl mainController) {
-		this.mainController = mainController;
-	}
 	
 	public SettingsDialog(){
         var loader = new FXMLLoader(getClass().getResource("SettingsDialog.fxml"));	// load .fxml 
@@ -68,12 +67,11 @@ public class SettingsDialog extends Dialog<Boolean> {
 	        	ApplicationSettings.set("databaseName", settingsDatabaseName.getText());
 	        	ApplicationSettings.set("databaseLogin", settingsLogin.getText());
 	        	ApplicationSettings.set("databasePassword", settingsPassword.getText());
-	        	this.mainController.disconnectUser();
 	    	} catch (Exception e) {
-				e.printStackTrace();
 				Alert a = new Alert(AlertType.WARNING);
-				a.setHeaderText("Problème de connection");
-				a.setContentText("Impossible d'établir une connection.");
+				a.setTitle("Impossible d'établir une connection");
+				a.setHeaderText("Erreur lors de la connection");
+				a.setContentText( e.getLocalizedMessage() );
 				a.show();
 				try {
 					UserAccountControl.setUpDatabaseFromSettings();

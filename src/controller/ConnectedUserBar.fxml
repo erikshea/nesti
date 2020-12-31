@@ -10,5 +10,5 @@
 		<Label styleClass="description" fx:id="connectedUserBarDescription"/>
 		<Label styleClass="name" fx:id="connectedUserBarUser"/>
 	</HBox>
-	<Button fx:id="connectedUserBarButton" onAction="#buttonAction"/>
+	<Button fx:id="connectedUserBarButton"/>
 </fx:root>
