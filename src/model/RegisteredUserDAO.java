@@ -8,9 +8,18 @@ import java.sql.SQLException;
 import application.DatabaseManager;
 
 
+/**
+ *	Register user data access object, supports mysql and sqlite
+ */
 public class RegisteredUserDAO {
-	private static final String TABLE_NAME = "registered_user";
+	private static final String TABLE_NAME = "registered_user"; // Table name in database that corresponds to user class
 	
+    /**
+     *  // Find user in database
+     * @param fieldName field name
+     * @param fieldValue value that must match
+     * @return
+     */
     public static RegisteredUser find (String fieldName, String fieldValue) {
     	RegisteredUser result = null;
     	
@@ -52,6 +61,10 @@ public class RegisteredUserDAO {
         return user;
     }
  
+    /**
+     * Get all registered users in database
+     * @return Observable list of users
+     */
     public static ObservableList<RegisteredUser> getAllRegisteredUsers () {
     	ObservableList<RegisteredUser> result = null;
     	
@@ -66,6 +79,12 @@ public class RegisteredUserDAO {
     }
  
 
+    /**
+     * Turn a result set into a n observable list of users
+     * @param rs to iterate
+     * @return	Observable list of RegisteredUser objects
+     * @throws SQLException If connection fails
+     */
     private static ObservableList<RegisteredUser> getAllFromResultSet(ResultSet rs) throws SQLException {
         ObservableList<RegisteredUser> userList = FXCollections.observableArrayList();
         var user = getFromResultSet(rs);
@@ -78,6 +97,11 @@ public class RegisteredUserDAO {
         return userList;
     }
 
+    /**
+     * Update a user's parameters in database
+     * @param user RegisteredUser object to update
+     * @throws SQLException if fails
+     */
     public static void update (RegisteredUser user) throws SQLException {
         String sql = "UPDATE " + TABLE_NAME
 			+ " SET username = ?,email = ?,first_name = ?,last_name = ?,city = ?,password_hash = ?,registration_date = ?"
@@ -97,10 +121,15 @@ public class RegisteredUserDAO {
 
     }
  
+    /**
+     * Insert new user in database
+     * @param user to insert
+     * @throws SQLException
+     */
     public static void insert (RegisteredUser user) throws SQLException {
         var sql = "INSERT INTO "  + TABLE_NAME
 			+ " (username, email, first_name, last_name, city, password_hash, registration_date)"
-			+ "VALUES (?,?,?,?,?,?,?);";
+			+ "VALUES (?,?,?,?,?,?,?);"; // Don't insert ID, let database auto-increment it.
 
         var insertUser = DatabaseManager.getConnection().prepareStatement(sql);
         insertUser.setString(1,  user.getUsername());
@@ -117,6 +146,10 @@ public class RegisteredUserDAO {
         user.setUserId(insertedUser.getUserId());
     }
     
+	/**
+	 * Create user table if it doesn't exist
+	 * @throws SQLException
+	 */
 	public static void createTable() throws SQLException {
 		DatabaseManager.getConnection().createStatement().execute("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
         		+ "user_id INTEGER NOT NULL PRIMARY KEY "
@@ -130,6 +163,10 @@ public class RegisteredUserDAO {
         		+ ", registration_date VARCHAR(200) );");
 	}
 	
+	/**
+	 * Populate user table with test data
+	 * @throws SQLException
+	 */
 	public static void populateTable() throws SQLException {
 		resetTable();
 		insert(new RegisteredUser("a", "a@a.a", "", "", "", "1aaaaaaaaaaaaaaaaaaaaaa"));
@@ -140,6 +177,10 @@ public class RegisteredUserDAO {
 		insert(new RegisteredUser("erik", "hoopsnale@gmail.com", "", "", "", "dssqqsqq1ytyuytuyutytuyut"));
 	}
 	
+	/**
+	 * Delete all rows in user table
+	 * @throws SQLException if fails
+	 */
 	public static void resetTable() throws SQLException {
     	DatabaseManager.getConnection().createStatement().execute("DELETE FROM " + TABLE_NAME + ";");
     }

@@ -1,6 +1,9 @@
 package form;
 
 
+/**
+ *	Valided email field checks contents is an email
+ */
 public class ValidatedEmailField  extends ValidatedField{
     public ValidatedEmailField() {
 		super();

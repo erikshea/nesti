@@ -1,7 +1,9 @@
 package form;
 
-import javafx.application.Platform;
 
+/**
+ *	Confirm password field checks if it matches against another password field
+ */
 public class ValidatedConfirmPasswordField  extends ValidatedBasePasswordField{
 	private String matchingPasswordFieldSelector;
 	private ValidatedBasePasswordField matchingPasswordField;
@@ -9,14 +11,27 @@ public class ValidatedConfirmPasswordField  extends ValidatedBasePasswordField{
     public ValidatedConfirmPasswordField() {
 		super();
 		this.addValidator(
-    		(val) -> this.getMatchingPasswordField() != null && val.equals(this.getMatchingPasswordField().getText()),
+    		(val) -> val.equals(this.getMatchingPasswordField().getText()),	// contents match
 			"Correspond."
-    		);
+    	);
 	}
 
+    protected ValidatedBasePasswordField getMatchingPasswordField() {
+    	if (this.matchingPasswordField == null && this.getForm() != null) { // If not set, try to look up matching field
+    		this.matchingPasswordField = (ValidatedBasePasswordField) this.getForm().lookup(matchingPasswordFieldSelector);
+    	}
+    	
+    	return this.matchingPasswordField;
+    }
+    
+    /**
+     * Sets matching field from a CSS selector
+     * @param fieldSelector CSS selector for matching field within form
+     */
     public void setFieldToMatch(String fieldSelector) {
     	this.matchingPasswordFieldSelector = fieldSelector;
-    	Platform.runLater( ()-> {
+
+    	this.needsLayoutProperty().addListener((o)->{
 			this.getMatchingPasswordField().textProperty().addListener(e->this.applyValidators());
     		this.applyValidators();
     	});
@@ -24,13 +39,5 @@ public class ValidatedConfirmPasswordField  extends ValidatedBasePasswordField{
     
     public String getFieldToMatch() {
     	return this.matchingPasswordFieldSelector;
-    }
-    
-    protected ValidatedBasePasswordField getMatchingPasswordField() {
-    	if (this.matchingPasswordField == null && this.getForm() != null) {
-    		this.matchingPasswordField = (ValidatedBasePasswordField) this.getForm().lookup(matchingPasswordFieldSelector);
-    	}
-    	
-    	return this.matchingPasswordField;
     }
 }

@@ -3,19 +3,20 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import form.*;
-import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import model.RegisteredUser;
 import model.RegisteredUserDAO;
 
 
-public class UserAccountInfo extends GridPane{
+/**
+ *	Account information pane that allows editing of user's data.
+ */
+public class UserAccountInfo extends ControlledGridPane{
     @FXML ValidatedUsernameField fieldModifyUsername;
     @FXML ValidatedEmailField fieldModifyEmail;
     @FXML BaseField fieldModifyFirstName, fieldModifyLastName, fieldModifyCity;
@@ -24,36 +25,33 @@ public class UserAccountInfo extends GridPane{
     @FXML ValidatedConfirmPasswordField fieldConfirmModifyPassword;
     @FXML Text registrationDate;
     
-	private ObjectProperty<RegisteredUser> loggedInUser = new SimpleObjectProperty<>(new RegisteredUser());
+    // Edited user is stored separately from logged in user, so that we can bind its properties to editable field.
     private ObjectProperty<RegisteredUser> editedUser = new SimpleObjectProperty<>();
-
-
+    
 	public void initialize() {
-		this.fieldOldPassword.addValidator(
-    			(val) -> this.loggedInUser.get().isPassword(val),
+		// When main controller is changed, reset fields and set up listeners
+		this.getMainControllerPropery().addListener((o,oldController,newController)->{
+			this.reset();
+	    	
+			this.fieldOldPassword.addValidator(
+    			(val) -> newController.getLoggedInUser().isPassword(val), // must match old password
     			"Correspond avec l'ancien mot de passe."
     		);
-    	this.fieldModifyUsername.addValidator(
-			(val) -> 	val.equals(loggedInUser.get().getUsername())
-					|| 	RegisteredUserDAO.find("username", val) == null,
-			"Nom d'utilisateur libre."
-		);
-    	this.fieldModifyEmail.addValidator(
-			(val) ->	val.equals(loggedInUser.get().getEmail())
-					||  RegisteredUserDAO.find("email", val) == null,
-			"Email libre."
-		);
-    	
-    	this.fieldModifyPassword.addSpecialCase(
-			(val) -> val.length() == 0
-		);
-		
-		this.loggedInUser.addListener((e,oldValue,newValue)->{
-			if (newValue != null ) {
-				this.editedUser.set(newValue.clone());
-			}
+	    	this.fieldModifyUsername.addValidator( 
+				(val) -> 	val.equals(newController.getLoggedInUser().getUsername()) // username should either unmodified, 
+						|| 	RegisteredUserDAO.find("username", val) == null,		  // or not present in data source
+				"Nom d'utilisateur libre."
+			);
+	    	this.fieldModifyEmail.addValidator(
+				(val) ->	val.equals(newController.getLoggedInUser().getEmail())	// email should either unmodified, 
+						||  RegisteredUserDAO.find("email", val) == null,			// or not present in data source
+				"Email libre."
+			);
+	    	
+	    	this.fieldModifyPassword.addSpecialCase( (val) -> val.length() == 0 ); // Accept blank new password (if unchanged)
 		});
 		
+		// when fields are edited, make edited user properties change as well
 		this.editedUser.addListener((e,oldValue,newValue)->{
 			this.registrationDate.textProperty().bind(newValue.getRegistrationDateProperty());
 			this.fieldModifyUsername.textProperty().bindBidirectional(newValue.getUsernameProperty());
@@ -62,7 +60,6 @@ public class UserAccountInfo extends GridPane{
 			this.fieldModifyLastName.textProperty().bindBidirectional(newValue.getLastNameProperty());
 			this.fieldModifyCity.textProperty().bindBidirectional(newValue.getCityProperty());
 		});
-		
 	}
 	
 	public UserAccountInfo(){
@@ -77,25 +74,28 @@ public class UserAccountInfo extends GridPane{
         }
 	}
 	
-	
     @FXML protected void handleSaveButtonAction(ActionEvent event) {
-    	if (this.fieldModifyPassword.getText().length()>0) {
+    	if (this.fieldModifyPassword.getText().length()>0) { // Change password if field not left blank
     		this.editedUser.get().setPasswordHashFromPlainText(this.fieldModifyPassword.getText());
     	}
     	try {
-			RegisteredUserDAO.update(this.editedUser.get());
-			this.loggedInUser.set(this.editedUser.get());
+			RegisteredUserDAO.update(this.editedUser.get()); // add edited user to data source
+			
+			this.getMainController() // log in edited user
+				.logInUser(this.editedUser.get().clone(), this.fieldModifyPassword.getText());  // Clone to avoid them pointing to same ref
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
+
     
-    public final ObjectProperty<RegisteredUser> getLoggedInUserProperty() {
-    	return this.loggedInUser;
-    }
-    
+    /**
+     * reset fields to currently logged in user info
+     */
     public void reset() {
-    	this.editedUser.set(this.loggedInUser.get().clone());
+    	this.editedUser.set(this.getMainController().getLoggedInUser().clone());
+    	this.fieldOldPassword.setText("");
+    	this.fieldModifyPassword.setText("");
+    	this.fieldConfirmModifyPassword.setText("");
     }
 }

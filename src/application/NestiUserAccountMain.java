@@ -1,10 +1,10 @@
 /*
 ____________________________________________________________________ 
-FILE NAME : ImitamagochiMain.java
-FILE LOCATION : /imitamagochi/src/
-DESCRIPTION : JavaFX demo: Animals age and die, and can perform actions.
+FILE NAME : NestiUserAccountMain.java
+FILE LOCATION : /nesti/src/
+DESCRIPTION : Basic user account manager. 
 AUTHOR : Erik Shea <hoopsnake@gmail.com>
-CREATION DATE : 2/10/2020
+CREATION DATE : 26/12/2020
 _____________________________________________________________________
 */
 
@@ -25,9 +25,9 @@ public class NestiUserAccountMain extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			var mainWindow = new UserAccountControl(); // Main window is handled by its own controller
-			var scene = new Scene(mainWindow);	// Set window size, with main window controller as root
-			// Context menus exist outside of node tree, so their styling done in scene
-			scene.getStylesheets().add(this.getClass().getResource("UserAccount.css").toExternalForm());
+			var scene = new Scene(mainWindow);	// Set main window controller as scene root
+			
+			scene.getStylesheets().add(this.getClass().getResource("UserAccount.css").toExternalForm()); // Attach CSS file to scene
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Nesti Account Manager");
 			primaryStage.setResizable(false); 
@@ -36,7 +36,6 @@ public class NestiUserAccountMain extends Application {
 			e.printStackTrace();
 		}
 	}
-
     
 	public static void main(String[] args) {
 		launch(args);

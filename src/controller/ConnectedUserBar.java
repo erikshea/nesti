@@ -1,41 +1,37 @@
 package controller;
 
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import model.RegisteredUser;
 import javafx.fxml.FXMLLoader;
-
-
 import java.io.IOException;
-
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-
+/**
+ * Account info bar below menus
+ */
 public class ConnectedUserBar extends HBox {
-	// property will be unidirectionally bound to currently logged in user property in app
-	private ObjectProperty<RegisteredUser> userProperty = new SimpleObjectProperty<>();
+
 	@FXML Label connectedUserBarDescription;
 	@FXML Label connectedUserBarUser;
-	@FXML Button connectedUserBarButton;
-	
-	public ConnectedUserBar() {
-		this.userProperty.addListener( (e,oldUser,newUser)-> {
-			this.getStyleClass().remove("notConnected");
-			if (newUser == null ) {
+	private UserAccountControl mainController;
+
+    public void setMainController(UserAccountControl c) {
+    	this.mainController = c;
+    	
+    	// listener for currently logged in user
+		this.mainController.getLoggedInUserProperty().addListener( (e,oldUser,newUser)-> {
+			this.getStyleClass().remove("notConnected"); // remove style class to prevent adding multiple times
+			if (newUser == null ) { // If no user logged in
 				this.connectedUserBarDescription.setText("Vous n'êtes pas connecté.");
 				this.getStyleClass().add("notConnected");
-				this.connectedUserBarButton.setText("Connection");
 			} else {
 				this.connectedUserBarDescription.setText("Utilisateur connecté: ");
-				this.connectedUserBarUser.setText(newUser.getUsername());
-				this.connectedUserBarButton.setText("Déconnection");
+				this.connectedUserBarUser.setText(newUser.getUsername()); 
 			}
 		} );
-		
+    }
+    
+	public ConnectedUserBar() {
         var loader = new FXMLLoader(getClass().getResource("ConnectedUserBar.fxml"));	
         loader.setRoot(this);																	
         loader.setController(this); // register as fxml root controller 
@@ -45,13 +41,5 @@ public class ConnectedUserBar extends HBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-	}
-
-	public final ObjectProperty<RegisteredUser> getUserProperty(){
-		return this.userProperty;
-	}
-	
-	public Button getButton() {
-		return this.connectedUserBarButton;
 	}
 }

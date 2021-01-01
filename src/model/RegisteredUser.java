@@ -1,14 +1,15 @@
 package model;
 
 import javafx.beans.property.*;
-import javafx.beans.value.ObservableValue;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import at.favre.lib.crypto.bcrypt.BCrypt.Version;
 import at.favre.lib.crypto.bcrypt.LongPasswordStrategies;
 
+/**
+ *	Registered user class with observable properties
+ */
 public class RegisteredUser implements Cloneable{
 	private IntegerProperty userId;
     private StringProperty username;
@@ -29,7 +30,7 @@ public class RegisteredUser implements Cloneable{
         this.city = new SimpleStringProperty();
         this.passwordHash = new SimpleStringProperty();
         
-        var formatter = new SimpleDateFormat("dd/MM/yyyy");  
+        var formatter = new SimpleDateFormat("dd/MM/yyyy");  // Format date
         this.registrationDate = new SimpleStringProperty(formatter.format(new Date()));
     }
 
@@ -43,21 +44,44 @@ public class RegisteredUser implements Cloneable{
     	this.setPasswordHashFromPlainText(plaintextPassword);
     }
     
+    
+    /**
+     * Clone user
+     */
     @Override
     public RegisteredUser clone() {
-		RegisteredUser user = new RegisteredUser(
-			this.getUsername(),
-			this.getEmail(),
-			this.getFirstName(),
-			this.getLastName(),
-			this.getCity(),
-			this.getPasswordHash()
-    	);
+		RegisteredUser user = new RegisteredUser();
+		user.setUsername(this.getUsername());
+		user.setEmail(this.getEmail());
+		user.setFirstName(this.getFirstName());
+		user.setLastName(this.getLastName());
+		user.setCity(this.getCity());
+    	user.setPasswordHash(this.getPasswordHash());
     	user.setUserId(this.getUserId());
     	user.setRegistrationDate(this.getRegistrationDate());
         return user;
     }
-    
+
+	/**
+	 *  Sets hash from plaintext password, using long password strategy described here: https://github.com/patrickfav/bcrypt
+	 * @param plaintextPassword to generate hash from
+	 */
+	public void setPasswordHashFromPlainText(String plaintextPassword) {
+		var hash = BCrypt.with(LongPasswordStrategies.truncate(Version.VERSION_2A))
+			.hashToString(6, plaintextPassword.toCharArray());
+		this.setPasswordHash(hash);
+	}
+	
+	/**
+	 *  Checks plaintext password against bcrypt hash.
+	 * @param plaintextPassword to generate hash from
+	 */
+	public boolean isPassword(String plaintextPassword) {
+		var verifyer = BCrypt.verifyer(Version.VERSION_2A, LongPasswordStrategies.truncate(Version.VERSION_2A));
+		return this.getPasswordHash() != null && verifyer.verify(plaintextPassword.toCharArray(), this.getPasswordHash()).verified;
+	}
+
+	/*** Getters and setters ***/
 	public Integer getUserId() {
 		return userId.get();
 	}
@@ -122,17 +146,6 @@ public class RegisteredUser implements Cloneable{
 		this.registrationDate.set(register_date);
 	}
 	
-	public void setPasswordHashFromPlainText(String plaintextPassword) {
-		var hash = BCrypt.with(LongPasswordStrategies.truncate(Version.VERSION_2A))
-			.hashToString(6, plaintextPassword.toCharArray());
-		this.setPasswordHash(hash);
-	}
-
-	public boolean isPassword(String plaintextPassword) {
-		var verifyer = BCrypt.verifyer(Version.VERSION_2A, LongPasswordStrategies.truncate(Version.VERSION_2A));
-		return this.getPasswordHash() != null && verifyer.verify(plaintextPassword.toCharArray(), this.getPasswordHash()).verified;
-	}
-
 	public final StringProperty getUsernameProperty() {
 		return this.username;
 	}

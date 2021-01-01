@@ -2,25 +2,20 @@ package controller;
 import java.io.IOException;
 
 import form.*;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.GridPane;
 import model.*;
 
 
-public class UserAccountLoginForm extends GridPane{
+/**
+ *	Login form
+ */
+public class UserAccountLoginForm extends ControlledGridPane{
 	@FXML private BaseField fieldConnectionIdentifier;
 	@FXML private ValidatedBasePasswordField fieldConnectionPassword;
-	private ObjectProperty<RegisteredUser> loggedInUser = new SimpleObjectProperty<>();
-    
-    public final ObjectProperty<RegisteredUser> getLoggedInUserProperty() {
-    	return this.loggedInUser;
-    }
 
 	public UserAccountLoginForm(){
         var loader = new FXMLLoader(getClass().getResource("UserAccountLoginForm.fxml"));	
@@ -34,22 +29,27 @@ public class UserAccountLoginForm extends GridPane{
         }
 	}
 	
+    /**
+     * Connection button logic. 
+     * @param event
+     */
     @FXML protected void handleConnectButtonAction(ActionEvent event) {
     	RegisteredUser user;
     	
-    	if ( fieldConnectionIdentifier.getText().contains("@")) {
+    	if ( fieldConnectionIdentifier.getText().contains("@")) { // If email entered
     		user = RegisteredUserDAO.find("email", fieldConnectionIdentifier.getText());
-    	} else {
+    	} else {// Username entered
     		user = RegisteredUserDAO.find("username", fieldConnectionIdentifier.getText());
     	}
     	
-    	if (user == null) {
+    	if (user == null || !user.isPassword(this.fieldConnectionPassword.getText())) { // If user doesn't exist, or wrong password
+    		// Show alert.
 			Alert a = new Alert(AlertType.WARNING);
 			a.setHeaderText("Identifiants incorrects");
-			a.setContentText("Vérifiez l'exactitude de vos paramètres.");
+			a.setContentText("Vérifiez vos identifiants.");
 			a.show();
-    	} else {
-    		this.loggedInUser.set(user);
+    	} else { // If information matches a user in data source
+    		this.getMainController().logInUser(user, this.fieldConnectionPassword.getText());
     	}
     }
 

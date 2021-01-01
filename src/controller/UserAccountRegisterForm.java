@@ -5,28 +5,27 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import form.*;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import model.*;
 
-public class UserAccountRegisterForm extends GridPane{
-	private ObjectProperty<RegisteredUser> loggedInUser = new SimpleObjectProperty<>();
-	
+public class UserAccountRegisterForm extends ControlledGridPane{
     @FXML private Text mainHeader;
     @FXML private BaseField fieldFirstName, fieldLastName, fieldCity;
     @FXML private ValidatedUsernameField fieldUsername;
     @FXML private ValidatedEmailField fieldEmail;
     @FXML private ValidatedPasswordField fieldPassword;
     @FXML private ValidatedBasePasswordField fieldConfirmPassword;
-    
     @FXML private Button submitButton;
     
+
+    /**
+     *  Submit button logic
+     * @param event
+     */
     @FXML protected void handleSubmitButtonAction(ActionEvent event) {
 		var newUser = new RegisteredUser(
 				fieldUsername.getText(),
@@ -37,27 +36,24 @@ public class UserAccountRegisterForm extends GridPane{
 				fieldPassword.getText()
 		);
 		try {
-			RegisteredUserDAO.insert(newUser);
+			RegisteredUserDAO.insert(newUser); // Add to data source
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		this.loggedInUser.set(newUser);
+		
+		this.getMainController().logInUser(newUser, fieldPassword.getText()); // Log in with new user.
     }
-    
-    // Interface for validator with one method passed in lambda function
-
     
     /**
      * Set up gui elements
      */
     @FXML private void initialize() {
-
     	this.fieldUsername.addValidator(
-			(val) -> RegisteredUserDAO.find("username", val) == null,
+			(val) -> RegisteredUserDAO.find("username", val) == null, // Username mustn't exist in data source
 			"Nom d'utilisateur libre."
 		);
     	this.fieldEmail.addValidator(
-			(val) -> RegisteredUserDAO.find("email", val) == null,
+			(val) -> RegisteredUserDAO.find("email", val) == null,	// Email mustn't exist in data source
 			"Email libre."
 		);
     }
@@ -76,9 +72,5 @@ public class UserAccountRegisterForm extends GridPane{
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-    }
-	
-    public final ObjectProperty<RegisteredUser> getLoggedInUserProperty() {
-    	return this.loggedInUser;
     }
 }

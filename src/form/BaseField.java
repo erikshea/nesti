@@ -6,9 +6,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 
+/**
+ * Base field inherited by all validated fields
+ *
+ */
 public class BaseField  extends VBox{
 	public Label label;
-	public TextField field;
+	protected  TextField field;
 	
     public String getLabelText() {
     	return this.label.getText();
@@ -19,20 +23,40 @@ public class BaseField  extends VBox{
     }
     
     public String getText() {
-    	return this.field.getText();
+    	return this.textProperty().get();
     }
     
     public void setText(String text) {
-    	this.field.setText(text);
+    	this.textProperty().set(text);
     }
     
+	/**
+	 * Adds TextField and Label
+	 */
 	public BaseField(){
     	this.label = new Label();
-		this.field = new TextField();
-    	this.getChildren().addAll(this.label, this.field);
+    	this.field = new TextField();
+    	this.getChildren().add(this.label);
+    	this.setField(new TextField());
 	}
 	
 	public StringProperty textProperty() {
-		return this.field.textProperty();
+		return this.getField().textProperty();
+	}
+	
+	/**
+	 * Sets the editable field. 
+	 * @param field
+	 */
+	public void setField(TextField field) {
+		if (this.getField() != null) { // if we're replacing an existing field (eg by a password field), remove old one
+			this.getChildren().remove(this.getField());
+		}
+		this.field=field;
+		this.getChildren().add(this.getField());
+	}
+	
+	public TextField getField() {
+		return this.field;
 	}
 }
