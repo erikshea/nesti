@@ -38,6 +38,13 @@ public class BaseField  extends VBox{
     	this.field = new TextField();
     	this.getChildren().add(this.label);
     	this.setField(new TextField());
+    	
+      	this.needsLayoutProperty().addListener((e)->{
+      		if (this.getId() != null) { // On layout, set unique id for inner field. Used with TestFX.
+      			this.getField().setId(this.getId()+"Input");
+        	}
+      	});
+
 	}
 	
 	public StringProperty textProperty() {

@@ -1,9 +1,12 @@
 package controller;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 /**
@@ -11,6 +14,7 @@ import javafx.fxml.FXML;
  */
 public class ConnectedUserBar extends HBox {
 
+ 	@FXML Button connectedUserBarButton;
 	@FXML Label connectedUserBarDescription;
 	@FXML Label connectedUserBarUser;
 	private UserAccountControl mainController;
@@ -24,9 +28,11 @@ public class ConnectedUserBar extends HBox {
 			if (newUser == null ) { // If no user logged in
 				this.connectedUserBarDescription.setText("Vous n'êtes pas connecté.");
 				this.getStyleClass().add("notConnected");
+				this.connectedUserBarButton.setText("Connection");
 			} else {
 				this.connectedUserBarDescription.setText("Utilisateur connecté: ");
 				this.connectedUserBarUser.setText(newUser.getUsername()); 
+				this.connectedUserBarButton.setText("Déconnection");
 			}
 		} );
     }
@@ -41,5 +47,9 @@ public class ConnectedUserBar extends HBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+	}
+	
+	@FXML protected void buttonAction(ActionEvent e) {
+		this.mainController.logOutUser();
 	}
 }

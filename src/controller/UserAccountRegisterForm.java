@@ -45,6 +45,14 @@ public class UserAccountRegisterForm extends ControlledGridPane{
     }
     
     /**
+     *  Connect button logic
+     * @param event
+     */
+    @FXML protected void handleConnectButtonAction(ActionEvent event) {
+		this.getMainController().showRegion( new UserAccountLoginForm() );
+    }
+    
+    /**
      * Set up gui elements
      */
     @FXML private void initialize() {

@@ -87,7 +87,4 @@ public class DatabaseManager {
         	conn.close();
         }
     }
-
-    
-    
 }

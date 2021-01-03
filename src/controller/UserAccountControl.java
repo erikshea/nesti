@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -47,6 +48,7 @@ public class UserAccountControl extends BorderPane{
 		
 		// If data source changes, log out user
 		DatabaseManager.getConnectionParametersProperty().addListener( (e,o,n)-> this.logOutUser() );
+	
 	}
 	
 	/**

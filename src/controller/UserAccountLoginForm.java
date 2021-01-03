@@ -53,4 +53,11 @@ public class UserAccountLoginForm extends ControlledGridPane{
     	}
     }
 
+    /**
+     * Register button logic. 
+     * @param event
+     */
+    @FXML protected void handleRegisterButtonAction(ActionEvent event) {
+    	this.getMainController().showRegion(new UserAccountRegisterForm());
+    }
 }

@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
@@ -29,9 +33,14 @@ public class ValidatedField  extends BaseField{
 		super();
 		this.getStyleClass().add("requiredField");
 		this.validationPopup = new Popup();
-		this.validationPopup.autoHideProperty().set(true); // hide on any key/mouse event
+		this.validationPopup.setAutoHide(true); // hide on any key/mouse event
 		this.validationPopup.setConsumeAutoHidingEvents(false); // hiding key/mouse event can also focus another field or manipulate window
-    	var messagesBox = new VBox(); // Region inside popup that contains all messages.
+
+		this.setOnMouseExited(e->this.validationPopup.hide());	// Hide validation messages on mouse exited
+
+		var messagesBox = new VBox(); // Region inside popup that contains all messages.
+		messagesBox.setMouseTransparent(true);
+		
     	messagesBox.getStyleClass().add("validationMessages");
     	this.validationPopup.getContent().add(messagesBox);
     	
@@ -68,10 +77,10 @@ public class ValidatedField  extends BaseField{
      * Show popup containing validator labels
      */
     protected void showValidationPopup() {
-    	var anchor = this.validationPopupAnchor==null?this.getField():this.validationPopupAnchor; // Region under which to show popup
-    	var position = anchor.localToScreen(0.0,anchor.getHeight()); // translate anchor position to screen coordinates
-    	
     	if ( this.getScene() != null ) {
+        	var anchor = this.validationPopupAnchor==null?this.getField():this.validationPopupAnchor; // Region under which to show popup
+        	var position = anchor.localToScreen(0.0,anchor.getHeight()); // translate anchor position to screen coordinates
+
     		this.validationPopup.show(this.getScene().getWindow(), position.getX(), position.getY() ); // Show popup 
     	}
     }
@@ -137,6 +146,7 @@ public class ValidatedField  extends BaseField{
     @Override
     public void setField(TextField field){
     	super.setField(field);
+    	
 		this.setUpFieldListeners(); // If field changes, listeners must be re-established
     }
     

@@ -4,7 +4,6 @@ import javafx.collections.ObservableList;
  
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import application.DatabaseManager;
 
 
@@ -173,7 +172,7 @@ public class RegisteredUserDAO {
 		insert(new RegisteredUser("judy", "dsq@d.dd", "", "", "", "1ddddddddddddddddddddddddd"));
 		insert(new RegisteredUser("bob", "bobby@bob.bob", "Bobby", "Brown", "", "2bobb2ypassdddddddd"));
 		insert(new RegisteredUser("jack", "jacky@d.dd", "", "", "", "dssqqsqq1ytyuytuyutytuyut"));
-		insert(new RegisteredUser("stacy", "s@s.s", "", "", "", "ssssssssssssssssssssss1"));
+		insert(new RegisteredUser("stacy", "s@s.s", "", "", "", "sssssssssSSSSSssssssssssss1"));
 		insert(new RegisteredUser("erik", "hoopsnale@gmail.com", "", "", "", "dssqqsqq1ytyuytuyutytuyut"));
 	}
 	

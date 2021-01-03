@@ -7,11 +7,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javafx15"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/testfx"/>
 	<classpathentry kind="lib" path="assets"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jdbc_sqlite"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/bcrypt"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jdbc_mysql"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

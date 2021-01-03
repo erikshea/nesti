@@ -29,6 +29,7 @@ public class UserAccountInfo extends ControlledGridPane{
     private ObjectProperty<RegisteredUser> editedUser = new SimpleObjectProperty<>();
     
 	public void initialize() {
+		this.setOnMouseClicked(e->System.out.println(this.getId()));
 		// When main controller is changed, reset fields and set up listeners
 		this.getMainControllerPropery().addListener((o,oldController,newController)->{
 			this.reset();
