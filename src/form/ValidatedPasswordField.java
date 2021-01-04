@@ -31,20 +31,16 @@ public class ValidatedPasswordField  extends ValidatedBasePasswordField{
 			"Contient au moins une lettre."
 		);
 	}
-
     
     protected static double passwordStrength(String password) {
-    	var possibleChars = 0; // Approximation of size set of potentially different characters in password
+    	var possibleChars = 0; // set of potentially different characters in password
     	
-    	for ( var checkRange:List.of("09", "az", "AZ") ) { // If any character is within those ranges
-    		if (password.matches("^.*[" + checkRange.charAt(0) + "-" + checkRange.charAt(1) + "].*$")) { // Build checking regex
-    			possibleChars += checkRange.charAt(1) - checkRange.charAt(0) + 1; // Disctance between the chars
+    	for ( var checkRange:List.of("09", "az", "AZ", " /") ) { 
+    		if (password.matches("^.*[" + checkRange.charAt(0) + "-" + checkRange.charAt(1) + "].*$")) { // If any character is within those ranges
+    			possibleChars += checkRange.charAt(1) - checkRange.charAt(0) + 1; // add distance between the chars
     		}
     	}
     	
-        if ( password.matches("^.*\\W.*$") ) { // special char
-            possibleChars += 50;
-        }
         // Equation source: https://www.ssi.gouv.fr/administration/precautions-elementaires/calculer-la-force-dun-mot-de-passe/
         return password.length() *  Math.log(possibleChars)/Math.log(2);
     }

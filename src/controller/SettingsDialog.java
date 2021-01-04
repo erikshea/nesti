@@ -73,10 +73,11 @@ public class SettingsDialog extends Dialog<Boolean> {
 	        	ApplicationSettings.set("databaseName", settingsDatabaseName.getText());
 	        	ApplicationSettings.set("databaseLogin", settingsLogin.getText());
 	        	ApplicationSettings.set("databasePassword", settingsPassword.getText());
+	        	UserAccountControl.setUpDatabaseFromSettings(); // Initialize with required tables.
 	    	} catch (Exception e) {
-				Alert a = new Alert(AlertType.WARNING); // On error, show warning dialog
-				a.setTitle("Impossible d'établir une connection");
-				a.setHeaderText("Erreur lors de la connection:");
+				Alert a = new Alert(AlertType.WARNING); // On exception, show warning dialog
+				a.setTitle("Impossible d'établir une connexion");
+				a.setHeaderText("Erreur lors de la connexion:");
 				a.setContentText( e.getLocalizedMessage() ); // Show localized error message
 				a.show();
 				try {

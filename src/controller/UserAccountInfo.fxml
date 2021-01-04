@@ -32,7 +32,7 @@
  		labelText="Ville"/>
 
  	<ValidatedBasePasswordField GridPane.rowIndex="5" GridPane.columnSpan="2" fx:id="fieldOldPassword"
- 		labelText="Ancien mot de passe" disableButton="#saveButton"/>
+ 		labelText="Mot de passe actuel" disableButton="#saveButton"/>
 
  	<ValidatedPasswordField GridPane.rowIndex="6" GridPane.columnSpan="2" fx:id="fieldModifyPassword"
  		labelText="Nouveau mot de passe (facultatif)" disableButton="#saveButton"/>

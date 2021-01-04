@@ -192,51 +192,7 @@ public class GUIUserAccountControlTest extends ApplicationTest {
 	   		assertTrue(userTest.isPassword("132TestTestTest"));
     	});
     }
-    /*
-    @Test
-    public void GUI_test_settings_page() {
-    	clickOn("Base de données");
-    	clickOn("Réglages"); // Click on information button
-    	
-    	
-    	clickOn("#databaseType");
-    	clickOn("sqlite");
-    	
+    
 
-    	lookup("#settingsAddress").queryTextInputControl().clear();
-    	clickOn("#settingsAddress");
-    	write("./assets/test_folder");
-
-    	lookup("#settingsDatabaseName").queryTextInputControl().clear();
-    	clickOn("#settingsDatabaseName");
-    	write("test_database");
-    	
-    	lookup("#settingsLogin").queryTextInputControl().clear();
-    	clickOn("#settingsLogin");
-    	write("testuser");
-    	
-    	lookup("#settingsLogin").queryTextInputControl().clear();
-    	clickOn("#settingsPassword");
-    	write("testpassword");
-    	
-    	clickOn("Enregistrer");
-    	
-
-    	clickOn("Base de données");
-    	clickOn("Ré-initialiser avec des données");
-		//System.out.println(new File("./assets/test_folder/test_database.sqlite.db").isFile());;
-
-    	
-    	Platform.runLater(()->{ // Check that user's info was entered correctly in the database
-	   		assertNotNull(control.lookup("UserAccountInfo")); // Check we're in the information page
-	   		var userTest = RegisteredUserDAO.find("username", "test_user");
-	   		assertNotNull(userTest);
-	   		assertEquals(userTest.getEmail(), "dsq@d.co.uk");
-	   		assertEquals(userTest.getFirstName(), "Judith");
-	   		assertEquals(userTest.getLastName(), "Filson");
-	   		assertEquals(userTest.getCity(), "Pawnee");
-	   		assertTrue(userTest.isPassword("2eeeeeeeeeeeEEEEEEEEEEEEEE"));
-    	});
-    }*/
     
 }
