@@ -1,9 +1,42 @@
 @font-face {
+    src: url("../../assets/fonts/Ubuntu-Light.ttf"),
+}
+@font-face {
     src: url("../../assets/fonts/Ubuntu-Bold.ttf"),
 }
 @font-face {
     src: url("../../assets/fonts/Ubuntu-Regular.ttf"),
 }
+
+.menu-item {
+    -fx-font-family: Ubuntu;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.menu-item:focused {
+	-fx-background-color: #8ad2ff;
+}
+
+#mainWindow{
+	color-background: white;
+	color-light: #b2d9d3;
+	color-dark: #016E70;
+	
+	color-highlight-mid: #006ec3;
+}
+.accountForm,
+ConnectedUserBar{
+	-fx-background-color: color-background;
+}
+
+
+.topBar {
+	-fx-background-color: color-highlight-mid;
+	-fx-pref-height: 200;
+	-fx-max-width: Infinity;
+}
+
 
 ConnectedUserBar{
 	-fx-padding: 5;
@@ -47,22 +80,15 @@ ConnectedUserBar Label {
 	visibility: hidden;
 }
 
-.menu-item {
-    -fx-font-family: Ubuntu;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-}
 
-.menu-item:focused {
-	-fx-background-color: #8ad2ff;
-}
 
 .validationMessages Label {
 	-fx-max-width: Infinity;
 	-fx-pref-height: 24;
     -fx-font-family: Ubuntu;
-	-fx-font-size: 18px;
-	-fx-background-image: url("/images/cross.png");
+	-fx-font-size: 16px;
+    -fx-font-weight: 300;
+	-fx-background-image: url("/images/validation/cross.png");
 	-fx-padding: 0 6 0 24;
 	-fx-background-repeat: no-repeat;
 	-fx-background-size: contain;
@@ -72,7 +98,7 @@ ConnectedUserBar Label {
 }
 
 .validationMessages Label.valid {
-	-fx-background-image: url("/images/check-mark.png");
+	-fx-background-image: url("/images/validation/check-mark.png");
     -fx-background-color: #A7B22B;
 }
 
@@ -96,8 +122,8 @@ ConnectedUserBar Label {
 }
 
 .accountForm Label{
-    -fx-font-size: 18px;
-    -fx-font-weight: bold; 
+    -fx-font-size: 16px;
+    -fx-font-weight: 300;
 }
 
 
@@ -107,6 +133,11 @@ ConnectedUserBar Label {
 
 .requiredField > *{ /* not applied?*/
 	-fx-max-width: Infinity;
+}
+
+.validatedForm TextField,
+.validatedForm PasswordField{
+	-fx-background-color: color-dark;
 }
 
 .validatedForm .requiredField TextField,

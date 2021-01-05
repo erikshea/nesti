@@ -69,7 +69,7 @@ public class RegisteredUserDAO {
     	
     	try {
         	var allUsersRs = DatabaseManager.getConnection().createStatement().executeQuery("SELECT * FROM " + TABLE_NAME + ";");
-        	result = getAllFromResultSet( allUsersRs );;
+        	result = getAllFromResultSet( allUsersRs );
     	}catch(SQLException e) {
     		e.printStackTrace();
     	}

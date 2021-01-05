@@ -96,8 +96,8 @@ public class ValidatedField  extends BaseField{
     }	
     
     /**
-     * Check field value all special cases
-     * @return true if one of the special cases is valid
+     * Check field value with all special cases
+     * @return true if one special case is valid
      */
     private boolean specialCasesValidate() {
     	boolean result = false;
@@ -141,7 +141,7 @@ public class ValidatedField  extends BaseField{
     }
     
     /**
-     *	Sets field (subclass of TextField) contained in this region
+     *	Sets input area (subclass of TextField) contained in this region
      */
     @Override
     public void setField(TextField field){
@@ -151,7 +151,7 @@ public class ValidatedField  extends BaseField{
     }
     
 	/**
-	 * Logic executed when field or its content changes
+	 * Set up field listeners (content changes, focused...)
 	 */
 	private void setUpFieldListeners(){
 		this.getField().textProperty().addListener((obs, oldText, newText)->{ // Field text listener

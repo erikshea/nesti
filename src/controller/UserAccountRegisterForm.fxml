@@ -2,12 +2,17 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.GridPane?>
 <?import form.*?>
 
 <fx:root type="javafx.scene.layout.GridPane"
 	xmlns:fx="http://javafx.com/fxml" styleClass="accountForm,validatedForm">
-	<Text styleClass="mainHeader" text="Nouveau compte utilisateur" GridPane.columnSpan="2"/>
+	
+	<VBox styleClass="topBar" GridPane.columnSpan="2">
+		<Text styleClass="mainHeader" text="Nouveau compte utilisateur" />
+		
+	</VBox>
 
  	<ValidatedUsernameField GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="fieldUsername"
  		labelText="Nom d'utilisateur" disableButton="#registerSubmitButton"/>

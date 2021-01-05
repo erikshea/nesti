@@ -92,11 +92,11 @@ public class GUISettingsUserAccountControlTest extends ApplicationTest {
     	write("./assets/database");
     	
     	clickOn("Enregistrer");
+    	
+    	assertTrue(new File("./assets/database/test_database.sqlite.db").isFile()); // Make sure db file was created
 
     	clickOn("Base de données");
     	clickOn("Ré-initialiser avec des données");
-		//System.out.println(new File("./assets/test_folder/test_database.sqlite.db").isFile());;
-
     	
     	Platform.runLater(()->{ // Check that user's info was entered correctly in the database
 	   		var userTest = RegisteredUserDAO.find("username", "judy");
