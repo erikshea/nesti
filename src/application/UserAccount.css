@@ -30,17 +30,40 @@ ConnectedUserBar{
 	-fx-background-color: color-background;
 }
 
-
-.topBar {
-	-fx-background-color: color-highlight-mid;
-	-fx-pref-height: 200;
-	-fx-max-width: Infinity;
+.inputArea{
+	-fx-padding: 0 0 0 50;
+	-fx-pref-height: 40;
+	-fx-background-image: url("/images/interface/envelope-solid.png");
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 25;
+    -fx-background-position: 10 center;
 }
 
 
+.formHeader {
+    -fx-padding: 30 30 30 30;
+	-fx-background-color: color-highlight-mid;
+	-fx-max-width: Infinity;
+}
+
+.formHeader HBox{
+	-fx-alignment: baseline-center;
+    -fx-font-weight: bold; 
+    -fx-font-size: 24px;
+}
+
+.formHeader Label {
+	-fx-padding: 0 0 0 50;
+	-fx-text-fill: white ;
+	
+	-fx-background-image: url("/images/interface/plus-solid.png");
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: contain;
+}
+
 ConnectedUserBar{
 	-fx-padding: 5;
-	-fx-alignment: CENTER_RIGHT;
+	-fx-alignment: top-right;
 	-fx-spacing: 5;
 	-fx-fill-height: true;
 }
@@ -88,8 +111,8 @@ ConnectedUserBar Label {
     -fx-font-family: Ubuntu;
 	-fx-font-size: 16px;
     -fx-font-weight: 300;
-	-fx-background-image: url("/images/validation/cross.png");
 	-fx-padding: 0 6 0 24;
+	-fx-background-image: url("/images/validation/cross.png");
 	-fx-background-repeat: no-repeat;
 	-fx-background-size: contain;
 	-fx-background-color: #BF360C;
@@ -108,12 +131,12 @@ ConnectedUserBar Label {
 	-fx-fill-width: true;
 }
 
-.mainHeader{
-    -fx-font-weight: bold; 
-    -fx-font-size: 24px;
-}
 
 .accountForm{
+	-fx-background-image: url("/images/interface/triangle.png");
+	-fx-background-position: center top;
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: 20 15;
     -fx-font-family: Ubuntu;
     -fx-font-size: 16px;
     -fx-padding: 30 30 30 30;

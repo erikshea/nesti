@@ -7,7 +7,7 @@
 <?import form.*?>
 
 <fx:root type="javafx.scene.layout.GridPane"
-	xmlns:fx="http://javafx.com/fxml" styleClass="accountForm,validatedForm">
+	xmlns:fx="http://javafx.com/fxml" styleClass="validatedForm">
 	<VBox GridPane.columnSpan="2">
 		<Text styleClass="mainHeader" text="Informations de compte"/>
 		<HBox styleClass="userRegistrationDate">
@@ -15,32 +15,33 @@
 			<Text fx:id="registrationDate"/>
 		</HBox>
 	</VBox>
-
- 	<ValidatedUsernameField GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="fieldModifyUsername"
- 		labelText="Nom d'utilisateur" disableButton="#saveButton"/>
- 	
- 	<ValidatedEmailField GridPane.rowIndex="2" GridPane.columnSpan="2" fx:id="fieldModifyEmail"
- 		labelText="Email" disableButton="#saveButton"/>
- 	
- 	<BaseField GridPane.rowIndex="3" fx:id="fieldModifyFirstName"
- 		labelText="Prénom"/>
-
- 	<BaseField GridPane.rowIndex="3" GridPane.columnIndex="1" fx:id="fieldModifyLastName"
- 		labelText="Nom"/>
- 		
- 	<BaseField GridPane.rowIndex="4" GridPane.columnSpan="2" fx:id="fieldModifyCity"
- 		labelText="Ville"/>
-
- 	<ValidatedBasePasswordField GridPane.rowIndex="5" GridPane.columnSpan="2" fx:id="fieldOldPassword"
- 		labelText="Mot de passe actuel" disableButton="#saveButton"/>
-
- 	<ValidatedPasswordField GridPane.rowIndex="6" GridPane.columnSpan="2" fx:id="fieldModifyPassword"
- 		labelText="Nouveau mot de passe (facultatif)" disableButton="#saveButton"/>
-
-  	<ValidatedConfirmPasswordField GridPane.rowIndex="7" GridPane.columnSpan="2" fx:id="fieldConfirmModifyPassword"
- 		labelText="Confirmez le nouveau mot de passe" fieldToMatch="#fieldModifyPassword" disableButton="#saveButton"/>
-
- 	<HBox GridPane.rowIndex="8" GridPane.columnSpan="2" alignment="top_right" >
-        <Button fx:id="saveButton" text="Enregistrer" onAction="#handleSaveButtonAction" disable="true"/>
-    </HBox>
+	<GridPane styleClass="accountForm"  GridPane.rowIndex="1"  GridPane.columnSpan="2">
+	 	<ValidatedUsernameField GridPane.columnSpan="2" fx:id="fieldModifyUsername"
+	 		labelText="Nom d'utilisateur" disableButton="#saveButton"/>
+	 	
+	 	<ValidatedEmailField GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="fieldModifyEmail"
+	 		labelText="Email" disableButton="#saveButton"/>
+	 	
+	 	<BaseField GridPane.rowIndex="2" fx:id="fieldModifyFirstName"
+	 		labelText="Prénom"/>
+	
+	 	<BaseField GridPane.rowIndex="2" GridPane.columnIndex="1" fx:id="fieldModifyLastName"
+	 		labelText="Nom"/>
+	 		
+	 	<BaseField GridPane.rowIndex="3" GridPane.columnSpan="2" fx:id="fieldModifyCity"
+	 		labelText="Ville"/>
+	
+	 	<ValidatedBasePasswordField GridPane.rowIndex="4" GridPane.columnSpan="2" fx:id="fieldOldPassword"
+	 		labelText="Mot de passe actuel" disableButton="#saveButton"/>
+	
+	 	<ValidatedPasswordField GridPane.rowIndex="5" GridPane.columnSpan="2" fx:id="fieldModifyPassword"
+	 		labelText="Nouveau mot de passe (facultatif)" disableButton="#saveButton"/>
+	
+	  	<ValidatedConfirmPasswordField GridPane.rowIndex="6" GridPane.columnSpan="2" fx:id="fieldConfirmModifyPassword"
+	 		labelText="Confirmez le nouveau mot de passe" fieldToMatch="#fieldModifyPassword" disableButton="#saveButton"/>
+	
+	 	<HBox GridPane.rowIndex="7" GridPane.columnSpan="2" alignment="top_right" >
+	        <Button fx:id="saveButton" text="Enregistrer" onAction="#handleSaveButtonAction" disable="true"/>
+	    </HBox>
+   </GridPane>
 </fx:root>

@@ -1,6 +1,10 @@
 package form;
 
+import java.io.IOException;
+
 import javafx.beans.property.StringProperty;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -11,7 +15,7 @@ import javafx.scene.layout.VBox;
  *
  */
 public class BaseField  extends VBox{
-	public Label label;
+	@FXML protected Label label;
 	protected  TextField field;
 	
     public String getLabelText() {
@@ -30,21 +34,28 @@ public class BaseField  extends VBox{
     	this.textProperty().set(text);
     }
     
+    public void initialize() {
+      	this.needsLayoutProperty().addListener((e)->{
+      		if (this.getId() != null) { // On layout, set unique id for inner field. Used with TestFX.
+      			this.getField().setId(this.getId()+"Input");
+      			this.getField().getStyleClass().add("inputArea");
+        	}
+      	});
+
+    }
 	/**
 	 * Adds TextField and Label
 	 */
 	public BaseField(){
-    	this.label = new Label();
-    	this.field = new TextField();
-    	this.getChildren().add(this.label);
-    	this.setField(new TextField());
-    	
-      	this.needsLayoutProperty().addListener((e)->{
-      		if (this.getId() != null) { // On layout, set unique id for inner field. Used with TestFX.
-      			this.getField().setId(this.getId()+"Input");
-        	}
-      	});
-
+        var loader = new FXMLLoader(getClass().getResource("BaseField.fxml"));	
+        loader.setRoot(this);																	
+        loader.setController(this); // register as fxml root controller 
+        	
+        try {
+            loader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
 	}
 	
 	public StringProperty textProperty() {
@@ -64,6 +75,9 @@ public class BaseField  extends VBox{
 	}
 	
 	public TextField getField() {
+		if (this.field == null) {
+			this.field= (TextField) this.lookup(".inputArea");
+		}
 		return this.field;
 	}
 }

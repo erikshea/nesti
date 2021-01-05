@@ -7,15 +7,17 @@
 <?import form.*?>
 
 <fx:root type="javafx.scene.layout.GridPane"
-	xmlns:fx="http://javafx.com/fxml" styleClass="loginForm, accountForm">
+	xmlns:fx="http://javafx.com/fxml" styleClass="loginForm">
 	<Text styleClass="mainHeader" text="Connection" GridPane.columnSpan="2"/>
 
-	<BaseField GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="fieldConnectionIdentifier" labelText="Nom d'utilisateur ou email"/>
+	<GridPane styleClass="accountForm"  GridPane.rowIndex="1"  GridPane.columnSpan="2">
+		<BaseField GridPane.columnSpan="2" fx:id="fieldConnectionIdentifier" labelText="Nom d'utilisateur ou email"/>
+		
+		<ValidatedBasePasswordField GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="fieldConnectionPassword" labelText="Mot de passe"/>
 	
-	<ValidatedBasePasswordField GridPane.rowIndex="2" GridPane.columnSpan="2" fx:id="fieldConnectionPassword" labelText="Mot de passe"/>
-
- 	<HBox GridPane.rowIndex="3" GridPane.columnSpan="2" alignment="top_right" >
-        <Button fx:id="registerButton" text="Créer un compte" onAction="#handleRegisterButtonAction"/>
-        <Button fx:id="connectButton" text="Se connecter" onAction="#handleConnectButtonAction"/>
-    </HBox>
+	 	<HBox GridPane.rowIndex="2" GridPane.columnSpan="2" alignment="top_right" >
+	        <Button fx:id="registerButton" text="Créer un compte" onAction="#handleRegisterButtonAction"/>
+	        <Button fx:id="connectButton" text="Se connecter" onAction="#handleConnectButtonAction"/>
+	    </HBox>
+	</GridPane>
 </fx:root>
