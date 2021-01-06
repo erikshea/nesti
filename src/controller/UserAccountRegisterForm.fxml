@@ -38,7 +38,7 @@
 	    <HBox styleClass="buttonBar" GridPane.rowIndex="6" GridPane.columnSpan="2">
 	        <Button fx:id="registerConnectButton" text="J'ai déja un compte" onAction="#handleConnectButtonAction"/>
 	        <Region HBox.hgrow="ALWAYS"/>
-	        <Button fx:id="registerSubmitButton" text="Créer un compte" onAction="#handleSubmitButtonAction" disable="true"/>
+	        <Button styleClass="mainButton" fx:id="registerSubmitButton" text="Confirmer" onAction="#handleSubmitButtonAction" disable="true"/>
 	    </HBox>
     </GridPane>
 </fx:root>

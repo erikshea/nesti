@@ -46,7 +46,7 @@ public class UserAccountLoginForm extends ControlledGridPane{
     		// Show alert.
 			Alert a = new Alert(AlertType.WARNING);
 			a.setHeaderText("Identifiants incorrects");
-			a.setContentText("Vérifiez vos identifiants.");
+			a.setContentText("Vérifiez vos paramètres.");
 			a.show();
     	} else { // If information matches a user in data source
     		this.getMainController().logInUser(user, this.fieldConnectionPassword.getText());

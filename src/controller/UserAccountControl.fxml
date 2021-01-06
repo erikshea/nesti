@@ -13,11 +13,6 @@
 				<Menu text="Fichier">
 					<MenuItem fx:id="quitMenu" text="Quitter" />
 				</Menu>
-				<Menu text="Compte">
-					<MenuItem fx:id="registerAccountMenu" text="Nouveau compte" />
-					<MenuItem fx:id="connectMenu" text="Connexion" />
-					<MenuItem fx:id="accountInfoMenu" text="Informations" />
-				</Menu>
 				<Menu text="Base de données">
 					<MenuItem fx:id="databaseSettingsMenu" text="Réglages" />
 					<MenuItem fx:id="databaseResetMenu" text="Ré-initialiser" />

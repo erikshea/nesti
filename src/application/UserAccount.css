@@ -12,27 +12,15 @@
 	color-light: #b2d9d3;
 	color-dark: #016E70;
 	background-grey: #cbcbcb;
-	
-	color-highlight-mid: #006ec3;
-	valid-color: #A7B22B;
-	invalid-color: #CC6C1D;
-}
-
-
-.menu-item {
     -fx-font-family: Ubuntu;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
+	color-highlight-mid: #006ec3;
+	valid-color: #a2ae18;
+	invalid-color: #c56515;
 }
-
-.menu-item:focused {
-	-fx-background-color: #8ad2ff;
-}
-
 
 
 .formHeader {
-    -fx-padding: 0 30 50 30;
+    -fx-padding: 10 30 50 30;
 	-fx-background-color: color-highlight-mid;
 	-fx-max-width: Infinity;
 	-fx-alignment: baseline-center;
@@ -191,7 +179,12 @@ ConnectedUserBar Label {
 	-fx-background-color: account-button-color;
 }
 
-.accountForm Button:disabled{
+.accountForm .mainButton{
+/* 	account-button-color: #889125; */
+	account-button-color: valid-color;
+}
+
+.accountForm .buttonBar Button:disabled{
 	-fx-opacity: 1.0 ;
 	account-button-color: #848484;
 	-fx-text-fill: #d9d9d9;
@@ -212,6 +205,7 @@ ValidatedEmailField .inputArea{
 	-fx-background-image: url("/images/interface/envelope-solid.png");
 }
 
+#fieldConnectionIdentifier .inputArea,
 ValidatedUsernameField .inputArea{
 	-fx-background-image: url("/images/interface/user-solid.png");
 }
@@ -248,6 +242,7 @@ BaseField .inputArea{
 
 .validatedForm .requiredField .inputArea{
 	-fx-background-color: invalid-color;
+		-fx-text-fill: white ;
 }
 
 .validatedForm .requiredField.valid .inputArea{
@@ -282,8 +277,4 @@ ValidatedPasswordField ProgressBar.good{
 
 ValidatedPasswordField ProgressBar.great{
 	-fx-accent: green ;
-}
-.menu-item {
-    -fx-font-weight: normal;
-    -fx-font-size: 12px;
 }

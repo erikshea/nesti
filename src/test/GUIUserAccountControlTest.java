@@ -38,8 +38,6 @@ public class GUIUserAccountControlTest extends ApplicationTest {
     	clickOn("Base de données");
     	clickOn("Ré-initialiser avec des données"); // reset database with test entries
     	
-    	clickOn("#connectedUserBarButton"); // click on log out button
-    	
     }
     
 
@@ -54,11 +52,6 @@ public class GUIUserAccountControlTest extends ApplicationTest {
 
     @Test
     public void GUI_test_login_page() {
-    	clickOn("Compte");
-    	clickOn("Informations"); // Click on information button
-    	// Check that we didn't go to information pane
-    	assertNull(control.lookup("UserAccountInfo"));
-
        	clickOn("#fieldConnectionIdentifierInput");
     	write("judy");
     	
@@ -66,7 +59,6 @@ public class GUIUserAccountControlTest extends ApplicationTest {
     	assertNotNull(control.lookup("UserAccountLoginForm")); // Check that we didn't leave login form
 
     	clickOn("OK");	// Click "OK" to dismiss alert saying we can't connect
-    	
     	
        	clickOn("#fieldConnectionPasswordInput");
     	write("1ddddddddddddddddddddddddd" + "E");
@@ -92,8 +84,6 @@ public class GUIUserAccountControlTest extends ApplicationTest {
     
     @Test
     public void GUI_test_login_page_with_email() {
-    	clickOn("#connectedUserBarButton"); // click on log out button
-    	
        	clickOn("#fieldConnectionIdentifierInput");
     	write("dsq@d.dd"); // Enter judy's email as identifier
     	clickOn("#fieldConnectionPasswordInput");
@@ -159,8 +149,7 @@ public class GUIUserAccountControlTest extends ApplicationTest {
     
     @Test
     public void GUI_test_registration_page() {
-    	clickOn("Compte");
-    	clickOn("Nouveau compte"); // Click on information button
+    	clickOn("#registerButton");
     	
     	clickOn("#fieldUsernameInput");
     	write("test_user");

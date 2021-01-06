@@ -49,7 +49,7 @@
 			<buttonTypes>
 		        <ButtonType text="Annuler"/>
 		        <ButtonType fx:id="defaultsButton" text="Valeurs par défaut" />
-		        <ButtonType fx:id="saveButton" text="Enregistrer" />
+		        <ButtonType fx:id="saveButton" text="Valider" />
 		    </buttonTypes>
 		</DialogPane>
     </dialogPane>

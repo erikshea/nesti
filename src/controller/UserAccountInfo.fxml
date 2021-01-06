@@ -10,7 +10,7 @@
 <fx:root type="javafx.scene.layout.GridPane"
 	xmlns:fx="http://javafx.com/fxml" styleClass="validatedForm,informationForm">
 	<VBox styleClass="formHeader" GridPane.columnSpan="2">
-		<Label styleClass="mainHeader" text="Informations de compte"/>
+		<Label styleClass="mainHeader" text="Modification du compte"/>
 	</VBox>
 	<GridPane styleClass="accountForm"  GridPane.rowIndex="1"  GridPane.columnSpan="2">
 		<HBox styleClass="userRegistrationDate" GridPane.columnSpan="2">
@@ -43,7 +43,7 @@
 	 		labelText="Confirmez le nouveau mot de passe" fieldToMatch="#fieldModifyPassword" disableButton="#saveButton"/>
 	
 	 	<HBox styleClass="buttonBar" GridPane.rowIndex="8" GridPane.columnSpan="2" >
-	        <Button fx:id="saveButton" text="Enregistrer" onAction="#handleSaveButtonAction" disable="true"/>
+	        <Button styleClass="mainButton" fx:id="saveButton" text="Enregistrer" onAction="#handleSaveButtonAction" disable="true"/>
 	    </HBox>
    </GridPane>
 </fx:root>

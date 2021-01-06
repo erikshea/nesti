@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.sql.SQLException;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.After;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
+import application.DatabaseManager;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -38,11 +40,6 @@ public class GUISettingsUserAccountControlTest extends ApplicationTest {
     @Before
     public void setUp () throws Exception {
     	System.out.println("GUI test running. Please do not use your mouse or keyboard.");
-    	clickOn("Base de données");
-    	clickOn("Ré-initialiser avec des données"); // reset database with test entries
-    	
-    	clickOn("#connectedUserBarButton"); // click on log out button
-    	
     }
     
 
@@ -83,7 +80,7 @@ public class GUISettingsUserAccountControlTest extends ApplicationTest {
     	clickOn("#settingsPassword");
     	write("testpassword");
     	
-    	clickOn("Enregistrer");
+    	clickOn("Valider");
     	
     	clickOn("OK"); // Error because folder doesn't exist
 
@@ -91,17 +88,33 @@ public class GUISettingsUserAccountControlTest extends ApplicationTest {
     	clickOn("#settingsAddress");
     	write("./assets/database");
     	
-    	clickOn("Enregistrer");
+    	clickOn("Valider");
     	
-    	assertTrue(new File("./assets/database/test_database.sqlite.db").isFile()); // Make sure db file was created
-
+    	var databaseFile = new File("./assets/database/test_database.sqlite.db");
+    	assertTrue(databaseFile.isFile()); // Make sure db file was created
+    	
     	clickOn("Base de données");
     	clickOn("Ré-initialiser avec des données");
     	
-    	Platform.runLater(()->{ // Check that user's info was entered correctly in the database
-	   		var userTest = RegisteredUserDAO.find("username", "judy");
-	   		assertNotNull(userTest);
-    	});
+    	// Check that user's info was entered correctly in the database
+    	assertNotNull(RegisteredUserDAO.find("username", "judy"));
+    	
+    	// disconnect and delete test database file
+    	try {
+			DatabaseManager.disconnect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	databaseFile.delete();
+    	
+    	// Reset database to defaults, and repopulate.
+    	clickOn("Base de données");
+    	clickOn("Réglages"); 
+    	clickOn("Valeurs par défaut");
+    	clickOn("Valider"); 
+    	clickOn("Base de données");
+    	clickOn("Ré-initialiser avec des données");
     }
    
 }

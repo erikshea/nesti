@@ -64,30 +64,24 @@ public class UserAccountControl extends BorderPane{
 	 *  Set up menu items
 	 */
 	public void setUpMenus() {
-		this.registerAccountMenu.setOnAction( e -> this.showRegion( new UserAccountRegisterForm() ) );
-		this.connectMenu.setOnAction( e -> this.showRegion( new UserAccountLoginForm() ) );
-		
-		this.accountInfoMenu.setOnAction( e -> this.showRegion( new UserAccountInfo() ) );
-		this.getLoggedInUserProperty().addListener( (e,old,newUser) -> this.accountInfoMenu.setDisable( newUser == null ) );
-		
 		this.quitMenu.setOnAction( e -> System.exit(0) );
 		
 		this.databaseResetMenu.setOnAction( e -> {
 			try {
 				RegisteredUserDAO.resetTable();
-				this.loggedInUser.set(null);
 			} catch (SQLException SQLe) {
 				SQLe.printStackTrace();
 			}
+			this.logOutUser();
 		});
 		
 		this.databaseRepopulateMenu.setOnAction( e -> {
 			try {
 				RegisteredUserDAO.populateTable();
-				this.loggedInUser.set(null);
 			} catch (SQLException SQLe) {
 				SQLe.printStackTrace();
 			}
+			this.logOutUser();
 		});
 
 		this.databaseSettingsMenu.setOnAction( e -> (new SettingsDialog()).show() );

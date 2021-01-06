@@ -22,7 +22,7 @@
 	 	<HBox styleClass="buttonBar" GridPane.rowIndex="2" GridPane.columnSpan="2" >
 	        <Button fx:id="registerButton" text="Créer un compte" onAction="#handleRegisterButtonAction"/>
 	        <Region HBox.hgrow="ALWAYS"/>
-	        <Button fx:id="connectButton" text="Se connecter" onAction="#handleConnectButtonAction"/>
+	        <Button styleClass="mainButton" fx:id="connectButton" text="Se connecter" onAction="#handleConnectButtonAction"/>
 	    </HBox>
 	</GridPane>
 </fx:root>

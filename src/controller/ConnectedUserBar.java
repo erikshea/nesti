@@ -25,12 +25,13 @@ public class ConnectedUserBar extends HBox {
 			this.getStyleClass().remove("connected"); // remove style class to prevent adding multiple times
 			if (newUser == null ) { // If no user logged in
 				this.connectedUserBarUser.setText("Vous n'êtes pas connecté."); 
-				this.connectedUserBarButton.setText("Connection");
 			} else {
 				this.getStyleClass().add("connected");
 				this.connectedUserBarUser.setText(newUser.getUsername()); 
-				this.connectedUserBarButton.setText("Déconnection");
 			}
+			// Hide button and remove it from layout if no user logged in
+			this.connectedUserBarButton.setVisible(newUser != null);
+			this.connectedUserBarButton.setManaged(newUser != null);
 		} );
     }
     

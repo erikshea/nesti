@@ -7,5 +7,5 @@
 <fx:root type="javafx.scene.layout.HBox"
 	xmlns:fx="http://javafx.com/fxml">
 	<Label styleClass="name" fx:id="connectedUserBarUser"/>
-	<Button fx:id="connectedUserBarButton" onAction="#buttonAction"/>
+	<Button fx:id="connectedUserBarButton" text="Déconnexion" onAction="#buttonAction"/>
 </fx:root>
