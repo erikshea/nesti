@@ -3,6 +3,7 @@ package form;
 import java.util.List;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Region;
 
 /**
  *	Validated password field checks password and shows a strength indicator bar below field
@@ -14,11 +15,10 @@ public class ValidatedPasswordField  extends ValidatedBasePasswordField{
 	@Override
 	public void initialize() {
 		super.initialize();
-		
 		this.strengthBar = new ProgressBar(0); // Strength indicator bar
 		this.getChildren().add(this.strengthBar); // Add at end of field region
 		this.validationPopupAnchor = this.strengthBar; // Popup should appear below strength bar
-		
+
     	this.addValidator(
 			(val) -> passwordStrength(val) >= this.minimumPasswordStrength,
 			"Suffisamment fort."

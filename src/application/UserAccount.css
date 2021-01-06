@@ -251,17 +251,20 @@ BaseField .inputArea{
 }
 
 .validatedForm .requiredField.valid .inputArea{
-	/*-fx-background-color: #A7B22B;*/
 	-fx-background-color: valid-color;
 }
 
 ValidatedPasswordField ProgressBar{
-	-fx-pref-height: 8;
+	-fx-pref-height: 10;
 	-fx-max-width: Infinity;
 }
 
 ValidatedPasswordField ProgressBar > *{
     -fx-background-insets: 0;
+}
+
+ValidatedPasswordField ProgressBar .track{
+    -fx-background-color: background-grey;
 }
 
 

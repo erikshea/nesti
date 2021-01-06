@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import application.DatabaseManager;
+import form.BaseField;
 
 
 /**
@@ -153,13 +154,13 @@ public class RegisteredUserDAO {
 		DatabaseManager.getConnection().createStatement().execute("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
         		+ "user_id INTEGER NOT NULL PRIMARY KEY "
         		+ ( DatabaseManager.getType().equals("mysql")?"AUTO_INCREMENT":"AUTOINCREMENT" )
-        		+ ", username VARCHAR(200) NOT NULL UNIQUE"
-        		+ ", email VARCHAR(200) NOT NULL UNIQUE"
-        		+ ", first_name VARCHAR(200)"
-        		+ ", last_name VARCHAR(200)"
-        		+ ", city VARCHAR(200)"
-        		+ ", password_hash VARCHAR(200) NOT NULL"
-        		+ ", registration_date VARCHAR(200) );");
+        		+ ", username VARCHAR(" + BaseField.MAX_TEXT_LENGTH + ") NOT NULL UNIQUE"
+        		+ ", email VARCHAR(" + BaseField.MAX_TEXT_LENGTH + ") NOT NULL UNIQUE"
+        		+ ", first_name VARCHAR(" + BaseField.MAX_TEXT_LENGTH + ")"
+        		+ ", last_name VARCHAR(" + BaseField.MAX_TEXT_LENGTH + ")"
+        		+ ", city VARCHAR(" + BaseField.MAX_TEXT_LENGTH + ")"
+        		+ ", password_hash VARCHAR(" + BaseField.MAX_TEXT_LENGTH + ") NOT NULL"
+        		+ ", registration_date VARCHAR(" + BaseField.MAX_TEXT_LENGTH + ") );");
 	}
 	
 	/**

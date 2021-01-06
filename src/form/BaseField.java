@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 public class BaseField  extends VBox{
 	@FXML protected Label label;
 	@FXML protected  TextField field;
-	protected static int MAX_TEXT_LENGTH = 200;
+	public final static int MAX_TEXT_LENGTH = 200;
 	
     public String getLabelText() {
     	return this.label.getText();
@@ -40,19 +40,20 @@ public class BaseField  extends VBox{
     }
     
     public void initialize() {
-    	// to enforce max field length we use a TextFormatter (not a Text change listener because we don't want to modify a value inside its listener)
-    	UnaryOperator<Change> enforceMaxLength = c -> {
-    	    if (c.isContentChange()) {
-    	        if (c.getControlNewText().length() > MAX_TEXT_LENGTH) {
-    	            c.setText(c.getControlNewText().substring(0, MAX_TEXT_LENGTH - 1));
-    	        }
-    	    }
-    	    return c;
-    	};
+    	// to enforce max field length we use a TextFormatter (not a Text change listener
+    	// because we don't want to modify a value inside its own listener).
+    	field.setTextFormatter(new TextFormatter<>(
+			c -> {
+	    	    if (c.isContentChange()) {
+	    	        if (c.getControlNewText().length() > MAX_TEXT_LENGTH) {
+	    	            c.setText(c.getControlNewText().substring(0, MAX_TEXT_LENGTH));
+	    	        }
+	    	    }
+	    	    return c;
+	    	}
+    	));
     	
-    	field.setTextFormatter(new TextFormatter<>(enforceMaxLength));
-    	
-    	this.needsLayoutProperty().addListener((e)->{
+    	this.needsLayoutProperty().addListener((e)->{ // Need to wait for layout phase to have access to fx:id
       		if (this.getId() != null) { 
       			this.getField().setId(this.getId()+"Input"); // set unique id for input field. Used with TestFX.
         	}
