@@ -3,16 +3,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Label?>
 <?import form.*?>
 
 <fx:root type="javafx.scene.layout.GridPane"
-	xmlns:fx="http://javafx.com/fxml" styleClass="validatedForm">
+	xmlns:fx="http://javafx.com/fxml" styleClass="validatedForm,registrationForm">
 	<VBox styleClass="formHeader" GridPane.columnSpan="2">
-		<HBox styleClass="mainHeader">
-			<Label text="Nouveau compte" />
-		</HBox>
+		<Label styleClass="mainHeader" text="Nouveau compte" />
 	</VBox>
 	<GridPane styleClass="accountForm"  GridPane.rowIndex="1"  GridPane.columnSpan="2">
 	 	<ValidatedUsernameField GridPane.columnSpan="2" fx:id="fieldUsername"
@@ -36,8 +35,9 @@
 	  	<ValidatedConfirmPasswordField GridPane.rowIndex="5" GridPane.columnSpan="2" fx:id="fieldConfirmPassword"
 	 		labelText="Confirmez le mot de passe" fieldToMatch="#fieldPassword" disableButton="#registerSubmitButton"/>
 	 
-	    <HBox GridPane.rowIndex="6" GridPane.columnSpan="2" alignment="top_right" >
+	    <HBox styleClass="buttonBar" GridPane.rowIndex="6" GridPane.columnSpan="2">
 	        <Button fx:id="registerConnectButton" text="J'ai déja un compte" onAction="#handleConnectButtonAction"/>
+	        <Region HBox.hgrow="ALWAYS"/>
 	        <Button fx:id="registerSubmitButton" text="Créer un compte" onAction="#handleSubmitButtonAction" disable="true"/>
 	    </HBox>
     </GridPane>

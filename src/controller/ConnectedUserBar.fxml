@@ -6,9 +6,6 @@
 
 <fx:root type="javafx.scene.layout.HBox"
 	xmlns:fx="http://javafx.com/fxml">
-	<HBox>
-		<Label styleClass="description" fx:id="connectedUserBarDescription"/>
-		<Label styleClass="name" fx:id="connectedUserBarUser"/>
-	</HBox>
+	<Label styleClass="name" fx:id="connectedUserBarUser"/>
 	<Button fx:id="connectedUserBarButton" onAction="#buttonAction"/>
 </fx:root>

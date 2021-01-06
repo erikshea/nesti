@@ -13,9 +13,7 @@ import javafx.fxml.FXML;
  * Account info bar below menus
  */
 public class ConnectedUserBar extends HBox {
-
  	@FXML Button connectedUserBarButton;
-	@FXML Label connectedUserBarDescription;
 	@FXML Label connectedUserBarUser;
 	private UserAccountControl mainController;
 
@@ -24,13 +22,12 @@ public class ConnectedUserBar extends HBox {
     	
     	// listener for currently logged in user
 		this.mainController.getLoggedInUserProperty().addListener( (e,oldUser,newUser)-> {
-			this.getStyleClass().remove("notConnected"); // remove style class to prevent adding multiple times
+			this.getStyleClass().remove("connected"); // remove style class to prevent adding multiple times
 			if (newUser == null ) { // If no user logged in
-				this.connectedUserBarDescription.setText("Vous n'êtes pas connecté.");
-				this.getStyleClass().add("notConnected");
+				this.connectedUserBarUser.setText("Vous n'êtes pas connecté."); 
 				this.connectedUserBarButton.setText("Connection");
 			} else {
-				this.connectedUserBarDescription.setText("Utilisateur connecté: ");
+				this.getStyleClass().add("connected");
 				this.connectedUserBarUser.setText(newUser.getUsername()); 
 				this.connectedUserBarButton.setText("Déconnection");
 			}

@@ -11,9 +11,10 @@ public class ValidatedPasswordField  extends ValidatedBasePasswordField{
 	private int minimumPasswordStrength = 80; // Minimum calculated strength for field to validate
 	ProgressBar strengthBar;
 	
-    public ValidatedPasswordField() {
-		super();
-
+	@Override
+	public void initialize() {
+		super.initialize();
+		
 		this.strengthBar = new ProgressBar(0); // Strength indicator bar
 		this.getChildren().add(this.strengthBar); // Add at end of field region
 		this.validationPopupAnchor = this.strengthBar; // Popup should appear below strength bar
@@ -30,26 +31,7 @@ public class ValidatedPasswordField  extends ValidatedBasePasswordField{
 			(val) -> val.matches("^.*[a-zA-Z].*$"), // At least one letter
 			"Contient au moins une lettre."
 		);
-	}
-    
-    protected static double passwordStrength(String password) {
-    	var possibleChars = 0; // set of potentially different characters in password
     	
-    	for ( var checkRange:List.of("09", "az", "AZ", " /") ) { 
-    		if (password.matches("^.*[" + checkRange.charAt(0) + "-" + checkRange.charAt(1) + "].*$")) { // If any character is within those ranges
-    			possibleChars += checkRange.charAt(1) - checkRange.charAt(0) + 1; // add distance between the chars
-    		}
-    	}
-    	
-        // Equation source: https://www.ssi.gouv.fr/administration/precautions-elementaires/calculer-la-force-dun-mot-de-passe/
-        return password.length() *  Math.log(possibleChars)/Math.log(2);
-    }
-
-
-	@Override
-	public void setField(TextField field) {
-		super.setField(field);
-		// When field is changed, add field text listener to update strength bar
 		this.textProperty().addListener((observable, oldText, newText) -> {
     		var progress = passwordStrength(newText)/(2*this.minimumPasswordStrength); // Halsway point of bar is minimum strength
     		this.strengthBar.setProgress(progress);
@@ -66,4 +48,17 @@ public class ValidatedPasswordField  extends ValidatedBasePasswordField{
     	});
 	}
 	
+    
+    protected static double passwordStrength(String password) {
+    	var possibleChars = 0; // set of potentially different characters in password
+    	
+    	for ( var checkRange:List.of("09", "az", "AZ", " /") ) { 
+    		if (password.matches("^.*[" + checkRange.charAt(0) + "-" + checkRange.charAt(1) + "].*$")) { // If any character is within those ranges
+    			possibleChars += checkRange.charAt(1) - checkRange.charAt(0) + 1; // add distance between the chars
+    		}
+    	}
+    	
+        // Equation source: https://www.ssi.gouv.fr/administration/precautions-elementaires/calculer-la-force-dun-mot-de-passe/
+        return password.length() *  Math.log(possibleChars)/Math.log(2);
+    }
 }

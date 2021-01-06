@@ -1,12 +1,16 @@
 package form;
 
 import java.io.IOException;
+import java.util.function.UnaryOperator;
 
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 
@@ -16,7 +20,8 @@ import javafx.scene.layout.VBox;
  */
 public class BaseField  extends VBox{
 	@FXML protected Label label;
-	protected  TextField field;
+	@FXML protected  TextField field;
+	protected static int MAX_TEXT_LENGTH = 200;
 	
     public String getLabelText() {
     	return this.label.getText();
@@ -35,18 +40,33 @@ public class BaseField  extends VBox{
     }
     
     public void initialize() {
-      	this.needsLayoutProperty().addListener((e)->{
-      		if (this.getId() != null) { // On layout, set unique id for inner field. Used with TestFX.
-      			this.getField().setId(this.getId()+"Input");
-      			this.getField().getStyleClass().add("inputArea");
+    	// to enforce max field length we use a TextFormatter (not a Text change listener because we don't want to modify a value inside its listener)
+    	UnaryOperator<Change> enforceMaxLength = c -> {
+    	    if (c.isContentChange()) {
+    	        if (c.getControlNewText().length() > MAX_TEXT_LENGTH) {
+    	            c.setText(c.getControlNewText().substring(0, MAX_TEXT_LENGTH - 1));
+    	        }
+    	    }
+    	    return c;
+    	};
+    	
+    	field.setTextFormatter(new TextFormatter<>(enforceMaxLength));
+    	
+    	this.needsLayoutProperty().addListener((e)->{
+      		if (this.getId() != null) { 
+      			this.getField().setId(this.getId()+"Input"); // set unique id for input field. Used with TestFX.
         	}
-      	});
-
+    	});
     }
+    
 	/**
 	 * Adds TextField and Label
 	 */
 	public BaseField(){
+		loadFxml();
+	}
+
+	protected void loadFxml() {
         var loader = new FXMLLoader(getClass().getResource("BaseField.fxml"));	
         loader.setRoot(this);																	
         loader.setController(this); // register as fxml root controller 
@@ -62,22 +82,9 @@ public class BaseField  extends VBox{
 		return this.getField().textProperty();
 	}
 	
-	/**
-	 * Sets the editable field. 
-	 * @param field
-	 */
-	public void setField(TextField field) {
-		if (this.getField() != null) { // if we're replacing an existing field (eg by a password field), remove old one
-			this.getChildren().remove(this.getField());
-		}
-		this.field=field;
-		this.getChildren().add(this.getField());
-	}
 	
 	public TextField getField() {
-		if (this.field == null) {
-			this.field= (TextField) this.lookup(".inputArea");
-		}
 		return this.field;
 	}
+
 }

@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import model.RegisteredUser;
 import model.RegisteredUserDAO;
@@ -23,13 +24,12 @@ public class UserAccountInfo extends ControlledGridPane{
     @FXML ValidatedBasePasswordField fieldOldPassword;
     @FXML ValidatedPasswordField fieldModifyPassword;
     @FXML ValidatedConfirmPasswordField fieldConfirmModifyPassword;
-    @FXML Text registrationDate;
+    @FXML Label registrationDate;
     
     // Edited user is stored separately from logged in user, so that we can bind its properties to editable field.
     private ObjectProperty<RegisteredUser> editedUser = new SimpleObjectProperty<>();
     
 	public void initialize() {
-		this.setOnMouseClicked(e->System.out.println(this.getId()));
 		// When main controller is changed, reset fields and set up listeners
 		this.getMainControllerPropery().addListener((o,oldController,newController)->{
 			this.reset();
@@ -81,9 +81,11 @@ public class UserAccountInfo extends ControlledGridPane{
     	}
     	try {
 			RegisteredUserDAO.update(this.editedUser.get()); // add edited user to data source
-			
-			this.getMainController() // log in edited user
-				.logInUser(this.editedUser.get().clone(), this.fieldModifyPassword.getText());  // Clone to avoid them pointing to same ref
+
+			this.getMainController().logInUser(
+				this.editedUser.get().clone(),   // Clone to avoid them pointing to same ref
+				this.fieldModifyPassword.getText()
+			); 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

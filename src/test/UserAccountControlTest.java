@@ -83,6 +83,46 @@ public class UserAccountControlTest extends ApplicationTest {
     }
     
     @Test
+    public void registration_form_truncate_oversize_field_text() {
+    	try {
+			RegisteredUserDAO.populateTable(); // Re-initialize data source with test data
+		} catch (SQLException e) {
+			fail("Database connection error.");
+		}
+    	Platform.runLater(()->{
+        	control.showRegion(new UserAccountRegisterForm());
+        	var usernameInput = lookup("#fieldUsernameInput").queryTextInputControl();
+        	usernameInput.setText("jusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddy");
+        	assertTrue(usernameInput.getText().length() <= 200);
+        	
+        	var emailInput = lookup("#fieldEmailInput").queryTextInputControl();
+        	emailInput.setText("jusdqsqdsqd@sqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddy.com");
+          	assertTrue(emailInput.getText().length() <= 200);
+          	
+        	var firstNameInput = lookup("#fieldFirstNameInput").queryTextInputControl();
+        	firstNameInput.setText("jusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddy.com");
+          	assertTrue(firstNameInput.getText().length() <= 200);
+          	
+        	var lastNameInput = lookup("#fieldLastNameInput").queryTextInputControl();
+        	lastNameInput.setText("jusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddy.com");
+          	assertTrue(lastNameInput.getText().length() <= 200);
+          	
+        	var cityInput = lookup("#fieldCityInput").queryTextInputControl();
+        	cityInput.setText("jusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddy.com");
+          	assertTrue(cityInput.getText().length() <= 200);
+          	
+        	var passwordInput = lookup("#fieldPasswordInput").queryTextInputControl();
+        	passwordInput.setText("jusdqsqdsqdsqdsdqsééééààààààààà---sd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddy");
+          	assertTrue(passwordInput.getText().length() <= 200);
+          	
+          	var confirmPasswordInput = lookup("#fieldConfirmPasswordInput").queryTextInputControl();
+          	confirmPasswordInput.setText("jusdqsqdsqdsqdsdqsééééààààààààà---sd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddyjusdqsqdsqdsqdsdqssd1111DFSDQFFsdsqssqddy");
+          	assertTrue(confirmPasswordInput.getText().length() <= 200);
+    	});
+    }
+   
+    
+    @Test
     public void registration_form_field_validation() {
     	try {
 			RegisteredUserDAO.populateTable(); // Re-initialize data source with test data
@@ -173,7 +213,7 @@ public class UserAccountControlTest extends ApplicationTest {
         	assertTrue(confirmPasswordStyle.contains("valid"));
     	});
     }
-   
+
     
     @Test
     public void registration_form_submit_button_activation() {

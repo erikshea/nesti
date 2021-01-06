@@ -8,6 +8,7 @@ import form.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Region;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import model.*;
@@ -19,7 +20,7 @@ public class UserAccountRegisterForm extends ControlledGridPane{
     @FXML private ValidatedEmailField fieldEmail;
     @FXML private ValidatedPasswordField fieldPassword;
     @FXML private ValidatedBasePasswordField fieldConfirmPassword;
-    @FXML private Button submitButton;
+    @FXML private Button registerSubmitButton;
     
 
     /**

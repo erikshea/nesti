@@ -24,13 +24,17 @@ public class ValidatedField  extends BaseField{
 	public Region validationPopupAnchor; // Region under which validator popup appears. defaults to field .
 	protected String disableButtonSelector;	// Selector for button that must be disabled if field isn't valid
 	protected Region buttonToDisable;	// Button to disable
+	
+	private List<Predicate<String>> specialCases;	// Special cases: field is valid if one checks regardless of other validators
+	private Map<FieldValidator, Label> validators;	// Validators to check against field value
 	protected Region form;	// Form in which this field is contained
 	
-	private List<Predicate<String>> specialCases = new ArrayList<>();	// Special cases: field is valid if one checks regardless of other validators
-	private Map<FieldValidator, Label> validators = new HashMap<>();	// Validators to check against field value
-
-	public ValidatedField(){
-		super();
+	@Override
+    public void initialize() {
+		super.initialize();
+		this.validators = new HashMap<>();
+		this.specialCases = new ArrayList<>();
+		
 		this.getStyleClass().add("requiredField");
 		this.validationPopup = new Popup();
 		this.validationPopup.setAutoHide(true); // hide on any key/mouse event
@@ -43,22 +47,14 @@ public class ValidatedField  extends BaseField{
 		
     	messagesBox.getStyleClass().add("validationMessages");
     	this.validationPopup.getContent().add(messagesBox);
-    	
-    	this.needsLayoutProperty().addListener((e)->this.applyValidators()); // Apply validators when assembling layout
+
+    	this.needsLayoutProperty().addListener((e)->{ // wait for layout phase
+    		this.form = (Region) this.getScene().lookup(".validatedForm"); // Query form containing this field
+    		this.applyValidators(); // apply validators
+    	}); 
+    	this.setUpFieldListeners();
 	}
 
-	/**
-	 * Query form containing this field
-	 * @return form region
-	 */
-	public Region getForm() {
-		if (this.form == null && this.getScene() != null) { // If form parameter not set, query it
-			this.form = (Region) this.getScene().lookup(".validatedForm");
-		}
-		return this.form;
-	}
-
-	
     /**
      * Add validator to field
      * @param validator function to validate field content against
@@ -102,12 +98,10 @@ public class ValidatedField  extends BaseField{
     private boolean specialCasesValidate() {
     	boolean result = false;
     	
-    	for ( var v:this.specialCases) {
-    		if (v.test(this.getText())) {
-    			result = true;
-    		}
+    	for ( var specialCase:this.specialCases) {
+    		result |= specialCase.test(this.getText());
     	}
-    	
+
     	return result;
     }
     
@@ -139,16 +133,7 @@ public class ValidatedField  extends BaseField{
     	}
     	return this.buttonToDisable;
     }
-    
-    /**
-     *	Sets input area (subclass of TextField) contained in this region
-     */
-    @Override
-    public void setField(TextField field){
-    	super.setField(field);
-    	
-		this.setUpFieldListeners(); // If field changes, listeners must be re-established
-    }
+
     
 	/**
 	 * Set up field listeners (content changes, focused...)
@@ -180,8 +165,8 @@ public class ValidatedField  extends BaseField{
 		});
 
 		// When field gains focus
-        this.getField().focusedProperty().addListener((observable, oldValue, newValue) -> {
-    		if (newValue) {
+        this.getField().focusedProperty().addListener((observable, wasFocused, isFocused) -> {
+    		if (isFocused) {
     			this.showValidationPopup(); // Show popup
     		} else {
     			this.validationPopup.hide(); // Must specify because auto-hide won't trigger on field traversal with TAB key
@@ -189,6 +174,13 @@ public class ValidatedField  extends BaseField{
     	});
 	}
 	
+	/**
+	 * Query form containing this field
+	 * @return form region
+	 */
+	public Region getForm() {
+		return this.form;
+	}
     
     public void setDisableButton(String buttonSelector) {
     	this.disableButtonSelector = buttonSelector;
