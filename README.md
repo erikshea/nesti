@@ -3,34 +3,29 @@ Nesti Account Manager
 A manager for user account creation, connection, and editing.  Users can log in and stay connected between sessions. Supports MySQL, and SQLite for local testing. Click [here](#running-the-project) for instruction on how to run the project, and [here](#dependencies) for a list of dependencies.
 
 ## Account creation
-
 ![](https://github.com/erikshea/nesti/blob/master/assets/readme/creation.png?raw=true)
 
 Validation conditions are updated as users type. Fields are styled in rea-time as valid (orange) or invalid (green), and submit button goes from greyed-out and disabled to blue when all conditions are met.
 
 ## Account modification
-
 ![](https://github.com/erikshea/nesti/blob/master/assets/readme/modification.png?raw=true)
 
 Likewise, users can only validate changes when all conditions are met.
 
 ## Connection
-
 ![](https://github.com/erikshea/nesti/blob/master/assets/readme/connection.png?raw=true)
 
 User stays connected between app launches.
 
 ## Database settings
-
 ![](https://github.com/erikshea/nesti/blob/master/assets/readme/database-settings.png?raw=true)
 
 SQLite (for local testing) or MySQL can be used to store registered users.
 
 ## Populating with test data
+![](https://github.com/erikshea/nesti/blob/master/assets/readme/populate_database.png?raw=true)
 
-![](https://github.com/erikshea/nesti/blob/master/assets/readme/populate-database.png?raw=true)
-
-You can easily populate your database with users by going into the Database menu.
+You can populate your database with example users by going into the Database menu.
 
 ## Running GUI and validation tests
 * *"GUIUserAccountControlTest.java"* tests GUI elements (fields, buttons, menus).
