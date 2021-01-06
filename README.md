@@ -1,11 +1,11 @@
 Nesti Account Manager
 =============
-A manager for user account creation, connection, and editing.  Users can log in and stay connected between sessions. Supports MySQL, and SQLite for local testing. Click [here](#running-the-project) for instruction on how to run the project, and [here](#dependencies) for a list of dependencies.
+A manager for user account creation, connection, and editing.  Users can log in and stay connected between sessions. Supports MySQL, and SQLite for local testing. Click [here](#running-the-project) for instructions on how to run the project, and [here](#dependencies) for a list of dependencies.
 
 ## Account creation
 ![](https://github.com/erikshea/nesti/blob/master/assets/readme/creation.png?raw=true)
 
-Validation conditions are updated continuously when fields are filled. Input areas and validation conditions are styled in real-time as valid (green) or invalid (orange), and submit button goes from greyed-out and disabled to blue when all conditions are met.
+Validation conditions are updated continuously when fields are filled. Input areas and validation conditions are styled in real-time as valid (green) or invalid (orange), and submit button goes from greyed-out and disabled to green when all conditions are met.
 
 ## Connection
 ![](https://github.com/erikshea/nesti/blob/master/assets/readme/connection.png?raw=true)
@@ -43,6 +43,8 @@ Running the project
 
 Dependencies
 =============
+![](https://github.com/erikshea/nesti/blob/master/assets/readme/nesti-build-path.png?raw=true)
+
 The "assets" directory should be in the build path. The Eclipse project in this repository also includes the following user libraries in the build path:
 
 ### javafx15
@@ -62,5 +64,7 @@ The "assets" directory should be in the build path. The Eclipse project in this 
 
 ### jdbc_sqlite
 * [sqlite-jdbc-3.34.0.jar](https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.34.0/sqlite-jdbc-3.34.0.jar)
+
+### JUnit 5
 
 To add a user library in Eclipse: *Window*>*Preferences*>*Java*>*Build Path*>*User Libraries*>*New*, then name it and add external jars.
