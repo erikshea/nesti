@@ -2,8 +2,6 @@ package form;
 
 import java.util.List;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Region;
 
 /**
  *	Validated password field checks password and shows a strength indicator bar below field

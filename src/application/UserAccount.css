@@ -33,6 +33,7 @@
 	-fx-padding: 0 0 0 45;
 	-fx-text-fill: white ;
 	-fx-background-repeat: no-repeat;
+	-fx-background-position: left center;
 	-fx-background-size: contain;
 }
 
@@ -41,8 +42,9 @@
 }
 
 .informationForm .mainHeader {
-	-fx-padding: 0 0 0 25;
-	-fx-background-image: url("/images/interface/info-solid.png");
+	-fx-padding: 0 0 0 40;
+	-fx-background-image: url("/images/interface/edit-regular.png");
+	-fx-background-size: 32;
 }
 
 .connectionForm .mainHeader {

@@ -27,7 +27,8 @@ SQLite (for local testing) or MySQL can be used to store registered users.
 
 You can populate your database with example users by going into the Database menu.
 
-## Running GUI and validation tests
+Running GUI and validation tests
+=============
 * *"GUIUserAccountControlTest.java"* tests GUI elements (fields, buttons, menus).
 * *"GUISettingsUserAccountControlTest.java"* tests the database settings dialog (made seperate from the above to allow testing of GUI elements with your own database).
 * *"UserAccountControlTest.java"* tests field validation, SQL injection, field formatting, submit button activation, and user creation and connection.
