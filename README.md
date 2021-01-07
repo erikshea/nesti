@@ -15,7 +15,7 @@ Validation conditions are updated continuously when fields are filled. Input are
 ## Account modification
 ![](https://github.com/erikshea/nesti/blob/master/assets/readme/modification.png?raw=true)
 
-Likewise, users can only validate changes when all conditions are met (unique username and email if those are changed...). 
+Likewise, users can only confirm validated changes. 
 
 ## Database settings
 ![](https://github.com/erikshea/nesti/blob/master/assets/readme/database-settings.png?raw=true)
@@ -47,6 +47,8 @@ Dependencies
 
 The "assets" directory should be in the build path. The Eclipse project in this repository also includes the following user libraries in the build path:
 
+### JUnit 5
+
 ### javafx15
 * [All jars in the "lib" folder.](https://gluonhq.com/products/javafx/)
 
@@ -64,7 +66,5 @@ The "assets" directory should be in the build path. The Eclipse project in this 
 
 ### jdbc_sqlite
 * [sqlite-jdbc-3.34.0.jar](https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.34.0/sqlite-jdbc-3.34.0.jar)
-
-### JUnit 5
 
 To add a user library in Eclipse: *Window*>*Preferences*>*Java*>*Build Path*>*User Libraries*>*New*, then name it and add external jars.

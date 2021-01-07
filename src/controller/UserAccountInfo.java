@@ -24,32 +24,32 @@ public class UserAccountInfo extends ControlledGridPane{
     @FXML ValidatedPasswordField fieldModifyPassword;
     @FXML ValidatedConfirmPasswordField fieldConfirmModifyPassword;
     @FXML Label registrationDate;
-    
+
     // Edited user is stored separately from logged in user, so that we can bind its properties to editable field.
     private ObjectProperty<RegisteredUser> editedUser = new SimpleObjectProperty<>();
     
 	public void initialize() {
-		// When main controller is changed, reset fields and set up listeners
-		this.getMainControllerPropery().addListener((o,oldController,newController)->{
+	 	this.needsLayoutProperty().addListener((e)->{ // On layout phase, reset fields
 			this.reset();
-	    	
-			this.fieldOldPassword.addValidator(
-    			(val) -> newController.getLoggedInUser().isPassword(val), // must match old password
-    			"Correspond avec l'ancien mot de passe."
-    		);
-	    	this.fieldModifyUsername.addValidator( 
-				(val) -> 	val.equals(newController.getLoggedInUser().getUsername()) // username should either unmodified, 
-						|| 	RegisteredUserDAO.find("username", val) == null,		  // or not present in data source
-				"Nom d'utilisateur libre."
-			);
-	    	this.fieldModifyEmail.addValidator(
-				(val) ->	val.equals(newController.getLoggedInUser().getEmail())	// email should either unmodified, 
-						||  RegisteredUserDAO.find("email", val) == null,			// or not present in data source
-				"Email libre."
-			);
-	    	
-	    	this.fieldModifyPassword.addSpecialCase( (val) -> val.length() == 0 ); // Accept blank new password (if unchanged)
 		});
+	 	
+		this.fieldOldPassword.addValidator(
+			(val) -> this.getMainController().getLoggedInUser().isPassword(val), // must match old password
+			"Correspond avec l'ancien mot de passe."
+		);
+    	this.fieldModifyUsername.addValidator( 
+			(val) -> 	val.equals(this.getMainController().getLoggedInUser().getUsername()) // username should either unmodified, 
+					|| 	RegisteredUserDAO.find("username", val) == null,		  // or not present in data source
+			"Nom d'utilisateur libre."
+		);
+    	this.fieldModifyEmail.addValidator(
+			(val) ->	val.equals(this.getMainController().getLoggedInUser().getEmail())	// email should either unmodified, 
+					||  RegisteredUserDAO.find("email", val) == null,			// or not present in data source
+			"Email libre."
+		);
+    	
+    	this.fieldModifyPassword.addSpecialCase( (val) -> val.length() == 0 ); // Accept blank new password (if unchanged)
+
 		
 		// when fields are edited, make edited user properties change as well
 		this.editedUser.addListener((e,oldValue,newValue)->{

@@ -20,7 +20,6 @@ public class UserAccountRegisterForm extends ControlledGridPane{
     @FXML private ValidatedPasswordField fieldPassword;
     @FXML private ValidatedBasePasswordField fieldConfirmPassword;
     @FXML private Button registerSubmitButton;
-    
 
     /**
      *  Submit button logic
@@ -28,12 +27,12 @@ public class UserAccountRegisterForm extends ControlledGridPane{
      */
     @FXML protected void handleSubmitButtonAction(ActionEvent event) {
 		var newUser = new RegisteredUser(
-				fieldUsername.getText(),
-				fieldEmail.getText(),
-				fieldFirstName.getText(),
-				fieldLastName.getText(),
-				fieldCity.getText(),
-				fieldPassword.getText()
+			fieldUsername.getText(),
+			fieldEmail.getText(),
+			fieldFirstName.getText(),
+			fieldLastName.getText(),
+			fieldCity.getText(),
+			fieldPassword.getText()
 		);
 		try {
 			RegisteredUserDAO.insert(newUser); // Add to data source

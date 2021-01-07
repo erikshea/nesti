@@ -39,7 +39,7 @@ public class SettingsDialog extends Dialog<Boolean> {
         // Fix to allow "X" button to close dialog with no "CANCEL_CLOSE" buttontype
         this.getDialogPane().getScene().getWindow().setOnCloseRequest(event -> this.hide());
 
-        this.setOnShowing(e->{ // On display, frill fields from settings
+        this.setOnShowing(e->{ // On display, fill fields from settings
         	databaseType.setValue(ApplicationSettings.get("databaseType"));
         	settingsAddress.setText(ApplicationSettings.get("databaseAddress"));
         	settingsDatabaseName.setText(ApplicationSettings.get("databaseName"));
@@ -47,7 +47,7 @@ public class SettingsDialog extends Dialog<Boolean> {
         	settingsPassword.setText(ApplicationSettings.get("databasePassword"));
         });
         
-        // default button fills fields from default settings
+        // default button : fills fields from default settings
         this.getDialogPane().lookupButton(defaultsButton).addEventFilter(ActionEvent.ACTION, event -> {
         	databaseType.setValue(ApplicationSettings.getDefault("databaseType"));
         	settingsAddress.setText(ApplicationSettings.getDefault("databaseAddress"));

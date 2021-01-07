@@ -27,7 +27,7 @@ public class UserAccountControl extends BorderPane{
     	this.connectedUserBar.setMainController(this);
 
 		try {
-			setUpDatabaseFromSettings(); // Load connection parameters from settings, connect
+			setUpDatabaseFromSettings(); // Load connection parameters from settings and connect
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -35,14 +35,17 @@ public class UserAccountControl extends BorderPane{
 
 		// Load logged in user from previous session
 		var previousUser = RegisteredUserDAO.find( "username", ApplicationSettings.get("loggedInUsername") );
-		if (previousUser != null && previousUser.isPassword(ApplicationSettings.get("loggedInPassword"))) { // Check stored plainText password
-			this.logInUser(previousUser,""); // LOg in user, don't modify password in settings
+		if (previousUser != null && previousUser.isPassword(ApplicationSettings.get("loggedInPassword"))) { // Check stored plaintext password
+			this.logInUser(previousUser,""); // Log in user, don't modify password in settings
 		} else {
 			this.logOutUser(); // run log out user logic
 		}
 		
-		//resize window on subsequent changes of bottom pane
-		this.bottomProperty().addListener((e)-> this.getScene().getWindow().sizeToScene());
+		
+		this.bottomProperty().addListener((e,o,newRegion)->{
+			this.getScene().getWindow().sizeToScene(); // resize window on changes of bottom pane
+			newRegion.requestFocus(); // don't focus first field
+		});
 		
 		// If data source changes, log out user
 		DatabaseManager.getConnectionParametersProperty().addListener( (e,o,n)-> this.logOutUser() );
@@ -50,8 +53,8 @@ public class UserAccountControl extends BorderPane{
 	}
 	
 	/**
-	 * Show region to fill window below menus and connected user bar)
-	 * @param region region to show
+	 * Set main to a region main windows bottom pane 
+	 * @param ControlledGridPane region to show
 	 */
 	public void showRegion(ControlledGridPane region) {
 		region.setMainController(this);
@@ -116,7 +119,7 @@ public class UserAccountControl extends BorderPane{
 	/**
 	 * Log in user, update app session settings, open information pane
 	 * @param user to log in
-	 * @param plaintextPassword plaintext password to check user against
+	 * @param plaintextPassword plaintext password to store in session settings
 	 */
 	public void logInUser(RegisteredUser user, String plaintextPassword) {
 		this.loggedInUser.set(user); // set observable property
