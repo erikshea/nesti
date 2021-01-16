@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<?import com.erikshea.nestiuseraccount.form.*?>
+
+<fx:root type="javafx.scene.layout.GridPane"
+	xmlns:fx="http://javafx.com/fxml" styleClass="validatedForm,registrationForm">
+	<VBox styleClass="formHeader" GridPane.columnSpan="2">
+		<Label styleClass="mainHeader" text="Nouveau compte" />
+	</VBox>
+	<GridPane styleClass="accountForm"  GridPane.rowIndex="1"  GridPane.columnSpan="2">
+	 	<ValidatedUsernameField GridPane.columnSpan="2" fx:id="fieldUsername"
+	 		labelText="Nom d'utilisateur" disableButton="#registerSubmitButton"/>
+	 	
+	 	<ValidatedEmailField GridPane.rowIndex="1" GridPane.columnSpan="2" fx:id="fieldEmail"
+	 		labelText="Email" disableButton="#registerSubmitButton"/>
+	 	
+	 	<BaseField GridPane.rowIndex="2" fx:id="fieldFirstName"
+	 		labelText="Prénom"/>
+	
+	 	<BaseField GridPane.rowIndex="2" GridPane.columnIndex="1" fx:id="fieldLastName"
+	 		labelText="Nom"/>
+	 		
+	 	<BaseField GridPane.rowIndex="3" GridPane.columnSpan="2" fx:id="fieldCity"
+	 		labelText="Ville"/>
+	
+	 	<ValidatedPasswordField GridPane.rowIndex="4" GridPane.columnSpan="2" fx:id="fieldPassword"
+	 		labelText="Mot de passe" disableButton="#registerSubmitButton"/>
+	
+	  	<ValidatedConfirmPasswordField GridPane.rowIndex="5" GridPane.columnSpan="2" fx:id="fieldConfirmPassword"
+	 		labelText="Confirmez le mot de passe" fieldToMatch="#fieldPassword" disableButton="#registerSubmitButton"/>
+	 
+	    <HBox styleClass="buttonBar" GridPane.rowIndex="6" GridPane.columnSpan="2">
+	        <Button fx:id="registerConnectButton" text="J'ai déja un compte" onAction="#handleConnectButtonAction"/>
+	        <Region HBox.hgrow="ALWAYS"/>
+	        <Button styleClass="mainButton" fx:id="registerSubmitButton" text="Confirmer" onAction="#handleSubmitButtonAction" disable="true"/>
+	    </HBox>
+    </GridPane>
+</fx:root>

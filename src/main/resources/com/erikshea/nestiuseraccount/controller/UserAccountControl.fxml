@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import com.erikshea.nestiuseraccount.controller.ConnectedUserBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+
+<fx:root type="javafx.scene.layout.BorderPane"
+	xmlns:fx="http://javafx.com/fxml"
+	styleClass="userAccount" fx:id="mainWindow">
+	<top>
+		<MenuBar>
+			<menus>
+				<Menu text="Fichier">
+					<MenuItem fx:id="quitMenu" text="Quitter" />
+				</Menu>
+				<Menu text="Base de données">
+					<MenuItem fx:id="databaseSettingsMenu" text="Réglages" />
+					<MenuItem fx:id="databaseResetMenu" text="Ré-initialiser" />
+					<MenuItem fx:id="databaseRepopulateMenu" text="Ré-initialiser avec des données" />
+				</Menu>
+			</menus>
+		</MenuBar>
+	</top>
+	<center>
+		<ConnectedUserBar fx:id="connectedUserBar"/>
+	</center>
+</fx:root>
