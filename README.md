@@ -1,6 +1,6 @@
 Nesti Account Manager
 =============
-A manager for user account creation, connection, and editing.  Users can log in and stay connected between sessions. Supports MySQL, and SQLite for local testing. Click [here](#running-the-project) for instructions on how to run the project, and [here](#dependencies) for a list of dependencies.
+A manager for user account creation, connection, and editing.  Users can log in and stay connected between sessions. Supports MySQL, and SQLite for local testing.
 
 ## Connection
 ![](https://github.com/erikshea/nesti/blob/master/src/main/resources/readme/connection.png?raw=true)
@@ -36,8 +36,6 @@ Running GUI and validation tests
 Dependencies
 =============
 All dependencies are included in the project's pom.xml file.
-
-They include:
 * JUnit 5
 * javafx15
 * testfx
